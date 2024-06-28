@@ -13,36 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.iban4j;
 
+import JavApi
 
-/**
- * Thrown to indicate that Iban's check digit is invalid
- */
-public class InvalidCheckDigitException extends Iban4jException {
-
-    private static final long serialVersionUID = -9222165415290480187L;
-
-    private String actual;
-    private String expected;
-
+extension org.iban4j {
+  
+  /**
+   * Thrown to indicate that Iban's check digit is invalid
+   */
+  public enum InvalidCheckDigitException : Error {//} extends Iban4jException {
+    
     /**
      * Constructs a <code>InvalidCheckDigitException</code> with no detail message.
      */
-    public InvalidCheckDigitException() {
-        super();
-    }
-
+    case InvalidCheckDigitException(Void)
+    
     /**
      * Constructs a <code>InvalidCheckDigitException</code> with the
      * specified detail message.
      *
      * @param s the detail message.
      */
-    public InvalidCheckDigitException(final String s) {
-        super(s);
-    }
-
+    case InvalidCheckDigitException(s : String)
+    
     /**
      * Constructs a <code>InvalidCheckDigitException</code> with the
      * specified actual, expected and detail message.
@@ -51,12 +44,8 @@ public class InvalidCheckDigitException extends Iban4jException {
      * @param expected the expected check digit.
      * @param s the detail message.
      */
-    public InvalidCheckDigitException(final String actual, final String expected, final String s) {
-        super(s);
-        this.actual = actual;
-        this.expected = expected;
-    }
-
+    case InvalidCheckDigitException(actual : String, expected : String, s : String)
+    
     /**
      * Constructs a <code>InvalidCheckDigitException</code> with the
      * specified detail message and cause.
@@ -64,25 +53,34 @@ public class InvalidCheckDigitException extends Iban4jException {
      * @param s the detail message.
      * @param t the cause.
      */
-    public InvalidCheckDigitException(final String s, final Throwable t) {
-        super(s, t);
-    }
-
+    case InvalidCheckDigitException(s : String, t :Throwable)
+    
     /**
      * Constructs a <code>InvalidCheckDigitException</code> with the
      * specified cause.
      *
      * @param t the cause.
      */
-    public InvalidCheckDigitException(final Throwable t) {
-        super(t);
+    case InvalidCheckDigitException(t : Throwable)
+    
+    public func getActual() -> String {
+      let m = Mirror(reflecting: self).children
+      for case let (_, value) in m {
+        if let tupel : (actual:String,expected:String,message:String) = value as? (String, String, String) {
+          return tupel.actual
+        }
+      }
+      return "" // NullPattern
     }
-
-    public String getActual() {
-        return actual;
+    
+    public func getExpected() -> String {
+      let m = Mirror(reflecting: self).children
+      for case let (_, value) in m {
+        if let tupel : (actual:String,expected:String,message:String) = value as? (String, String, String) {
+          return tupel.expected
+        }
+      }
+      return "" // NullPattern
     }
-
-    public String getExpected() {
-        return expected;
-    }
+  }
 }

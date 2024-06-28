@@ -13,33 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.iban4j;
 
-/**
- * Thrown to indicate that requested country is not supported.
- */
-public class UnsupportedCountryException extends Iban4jException {
+import JavApi
 
-    private static final long serialVersionUID = -3733353745417164234L;
-
-    private String countryCode;
+extension org.iban4j {
+  
+  /**
+   * Thrown to indicate that requested country is not supported.
+   */
+  public enum UnsupportedCountryException : Error {//}, Iban4jException {
 
     /**
      * Constructs a <code>UnsupportedCountryException</code> with no detail message and cause.
      */
-    public UnsupportedCountryException() {
-        super();
-    }
-
+    case UnsupportedCountryException (Void)
+    
     /**
      * Constructs a <code>UnsupportedCountryException</code> with the
      * specified detail message.
      *
      * @param s the detail message.
      */
-    public UnsupportedCountryException(final String s) {
-        super(s);
-    }
+    case UnsupportedCountryException (countryCode : String)
 
     /**
      * Constructs a <code>UnsupportedCountryException</code> with the
@@ -48,11 +43,8 @@ public class UnsupportedCountryException extends Iban4jException {
      * @param countryCode the country code.
      * @param s the detail message.
      */
-    public UnsupportedCountryException(String countryCode, final String s) {
-        super(s);
-        this.countryCode = countryCode;
-    }
-
+    case UnsupportedCountryException(countryCode : String, s : String)
+    
     /**
      * Constructs a <code>UnsupportedCountryException</code> with the
      * specified detail message and cause.
@@ -60,21 +52,33 @@ public class UnsupportedCountryException extends Iban4jException {
      * @param s the detail message.
      * @param t the cause.
      */
-    public UnsupportedCountryException(final String s, final Throwable t) {
-        super(s, t);
-    }
-
+    case UnsupportedCountryException(s : String, t : Throwable)
+    
     /**
      * Constructs a <code>UnsupportedCountryException</code> with the
      * specified cause.
      *
      * @param t the cause.
      */
-    public UnsupportedCountryException(final Throwable t) {
-        super(t);
+    case UnsupportedCountryException(t : Throwable)
+    
+    public func getCountryCode() -> String {
+      let m = Mirror(reflecting: self).children
+      for case let (_?, value) in m {
+        if let tupel : (countryCode:String,message:String) = value as? (String, String) {
+          return tupel.countryCode
+        }
+        else {
+          if Mirror(reflecting: value).children.count == 1 {
+            let single = Mirror(reflecting: value).children.first!.value
+            if single is String {
+              return single as! String
+            }
+          }
+        }
+        
+      }
+      return "" // NullPattern
     }
-
-    public String getCountryCode() {
-        return countryCode;
-    }
+  }
 }

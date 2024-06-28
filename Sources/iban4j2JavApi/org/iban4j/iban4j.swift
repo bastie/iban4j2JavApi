@@ -1,3 +1,6 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
 /**
  *
@@ -7,4 +10,6 @@
  * Includes exceptions for Iban and Bic validation.
  *
  */
-package org.iban4j;
+extension org {
+  public enum iban4j {}
+}

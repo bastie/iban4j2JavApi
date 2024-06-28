@@ -1,12 +1,11 @@
-iban4j 
-======
+iban4j2JavApi 
+=============
 
-[![Build Status](https://github.com/arturmkrtchyan/iban4j/actions/workflows/java-ci.yml/badge.svg)](https://github.com/arturmkrtchyan/iban4j/actions/workflows/java-ci.yml) [![Coverage Status](https://img.shields.io/coveralls/arturmkrtchyan/iban4j.svg)](https://coveralls.io/r/arturmkrtchyan/iban4j) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.iban4j/iban4j/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.iban4j/iban4j)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://raw.githubusercontent.com/arturmkrtchyan/iban4j/master/LICENSE.txt)
 
-A Java library for generation and validation of the International Bank Account
+A Swift library for generation and validation of the International Bank Account
 Numbers (<a href="http://en.wikipedia.org/wiki/ISO_13616" target="_blank">IBAN ISO_13616</a>) and Business Identifier
-Codes (<a href="http://en.wikipedia.org/wiki/ISO_9362" target="_blank">BIC ISO_9362</a>).
+Codes (<a href="http://en.wikipedia.org/wiki/ISO_9362" target="_blank">BIC ISO_9362</a>) based on great projekt iban4j.
 
 
 #### Iban quick examples:
@@ -83,18 +82,7 @@ Codes (<a href="http://en.wikipedia.org/wiki/ISO_9362" target="_blank">BIC ISO_9
          .build();
 ```
 
-#### Maven dependency:
 
-```xml
-
-<dependency>
-    <groupId>org.iban4j</groupId>
-    <artifactId>iban4j</artifactId>
-  <version>3.2.9-RELEASE</version>
-</dependency>
-```
-
-![Compatibility Badge](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
 
 #### References
 
@@ -103,7 +91,9 @@ Codes (<a href="http://en.wikipedia.org/wiki/ISO_9362" target="_blank">BIC ISO_9
 - https://www.ecb.europa.eu/paym/retpaym/paymint/sepa/shared/pdf/iban_registry.pdf
 
 ## License
-Copyright 2015 Artur Mkrtchyan.
+
+Java iban4j is copyright 2015 Artur Mkrtchyan.
+Ported to Swift by Sebastian Ritter.
 
 Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
 

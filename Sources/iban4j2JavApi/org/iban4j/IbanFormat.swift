@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Artur Mkrtchyan
+ * Copyright 2015 Artur Mkrtchyan
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.iban4j.bban;
+extension org.iban4j {
 
-/**
- * Basic Bank Account Number Entry Types.
- */
-public enum BbanEntryType {
-        bank_code,
-        branch_code,
-        account_number,
-        national_check_digit,
-        account_type,
-        owner_account_number,
-        identification_number
+  /**
+   * Iban Format Enum
+   */
+  public enum IbanFormat {
+    /**
+     * Default Iban Format.
+     * Groups of four characters separated by a single space.
+     */
+    case Default
+
+    /**
+     * No Format.
+     */
+    case None
+  }
+
 }

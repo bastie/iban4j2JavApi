@@ -56,7 +56,7 @@ extension org.iban4j {
      * @param expected the expected value.
      * @param s the detail message.
      */
-    case BicFormatException(violation :BicFormatViolation, actual : Any, expected : Any, s: String)
+    case BicFormatException(_ violation :BicFormatViolation, _ actual : Any, _ expected : Any, _ s: String)
     
     /**
      * Constructs a <code>BicFormatException</code> with the
@@ -65,7 +65,7 @@ extension org.iban4j {
      * @param violation the violation.
      * @param s the detail message.
      */
-    case BicFormatException(violation : BicFormatViolation, s : String)
+    case BicFormatException(_ violation : BicFormatViolation, _ s : String)
     
     /**
      * Constructs a <code>BicFormatException</code> with the
@@ -75,7 +75,7 @@ extension org.iban4j {
      * @param actual the actual value.
      * @param s the detail message.
      */
-    case BicFormatException(violation : BicFormatViolation, actual : Any, s : String)
+    case BicFormatException(_ violation : BicFormatViolation, _ actual : Any, _ s : String)
     
     /**
      * Constructs a <code>BicFormatException</code> with the

@@ -43,7 +43,7 @@ extension org.iban4j {
      * @param countryCode the country code.
      * @param s the detail message.
      */
-    case UnsupportedCountryException(countryCode : String, s : String)
+    case UnsupportedCountryException(_ countryCode : String, _ s : String)
     
     /**
      * Constructs a <code>UnsupportedCountryException</code> with the

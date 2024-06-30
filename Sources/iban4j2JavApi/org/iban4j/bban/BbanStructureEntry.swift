@@ -16,7 +16,7 @@
 
 import JavApi
 
-extension org.iban4j {
+extension org.iban4j.bban {
   
   /**
    * Bban Structure Entry representation.
@@ -52,9 +52,9 @@ extension org.iban4j {
       self.entryType = newEntryType;
       self.characterType = newCharacterType;
       self.length = newLength;
-      if org.iban4j.BbanStructureEntry.needInit {
-        org.iban4j.BbanStructureEntry.initOnce()
-        org.iban4j.BbanStructureEntry.needInit = false
+      if org.iban4j.bban.BbanStructureEntry.needInit {
+        org.iban4j.bban.BbanStructureEntry.initOnce()
+        org.iban4j.bban.BbanStructureEntry.needInit = false
       }
     }
     
@@ -134,18 +134,18 @@ extension org.iban4j {
     }
     
     public func getRandom() throws -> String {
-      return try getRandom(Random()); // TODO: create Random Implementation in JavApi4Swift
+      return try getRandom(org.Random()); // TODO: create Random Implementation in JavApi4Swift
     }
     
-    public func getRandom(_ _random : Random) throws -> String {
+    public func getRandom(_ _random : org.Random) throws -> String {
       var random = _random
       // Create a new seeded Random, so it doesn't matter how this Random is used, it won't affect subsequent usages
       // of the original Random. (which can impact seeded behaviour when many IBANs are generated or the number of
       // IBAN entries change).
-      random = Random(random.nextInt());
+      random = org.Random(random.nextInt());
       
       var s = StringBuilder();
-      let charChoices : [Character]? = try org.iban4j.BbanStructureEntry.charByCharacterType.get(characterType);
+      let charChoices : [Character]? = try org.iban4j.bban.BbanStructureEntry.charByCharacterType.get(characterType);
       if (charChoices == nil) {
         throw Throwable.RuntimeException("programmer has not implemented choices for character type \(characterType.name())");
       }
@@ -165,20 +165,6 @@ extension org.iban4j {
       get {
         return toString()
       }
-    }
-  }
-  
-  
-  // TODO: java.util.Random implementation needed
-  public struct Random {
-      
-    public init () {}
-    public init (_ ignored : Int) {}
-    public func nextInt(_ maxPlus1 : Int) -> Int {
-      return Int.random(in: Int.min...maxPlus1)
-    }
-    public func nextInt () -> Int {
-      return Int.random(in: Int.min...Int.max)
     }
   }
 }

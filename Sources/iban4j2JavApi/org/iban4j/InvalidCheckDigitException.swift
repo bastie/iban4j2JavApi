@@ -44,7 +44,7 @@ extension org.iban4j {
      * @param expected the expected check digit.
      * @param s the detail message.
      */
-    case InvalidCheckDigitException(actual : String, expected : String, s : String)
+    case InvalidCheckDigitException(_ actual : String, _ expected : String, _ s : String)
     
     /**
      * Constructs a <code>InvalidCheckDigitException</code> with the

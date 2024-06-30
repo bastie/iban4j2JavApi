@@ -65,10 +65,10 @@ extension org.iban4j {
      * @param expected the expected value.
      * @param s the detail message.
      */
-    case IbanFormatException(violation : IbanFormatViolation,
-                             actual : Any,
-                             expected : Any,
-                             s : String)
+    case IbanFormatException(_ violation : IbanFormatViolation,
+                             _ actual : Any,
+                             _ expected : Any,
+                             _ s : String)
     
     /**
      * Constructs a <code>IbanFormatException</code> with the
@@ -78,9 +78,9 @@ extension org.iban4j {
      * @param actual the actual value.
      * @param s the detail message.
      */
-    case IbanFormatException(violation : IbanFormatViolation,
-                             actual : Any,
-                             s : String)
+    case IbanFormatException(_ violation : IbanFormatViolation,
+                             _ actual : Any,
+                             _ s : String)
     
     /**
      * Constructs a <code>IbanFormatException</code> with the
@@ -93,11 +93,11 @@ extension org.iban4j {
      * @param invalidCharacter the invalid character.
      * @param s the detail message.
      */
-    case IbanFormatException(violation : IbanFormatViolation,
-                             entryType : org.iban4j.bban.BbanEntryType,
-                             actual : Any,
-                             invalidCharacter : Character,
-                             s : String)
+    case IbanFormatException(_ violation : IbanFormatViolation,
+                             _ entryType : org.iban4j.bban.BbanEntryType?,
+                             _ actual : Any?,
+                             _ invalidCharacter : Character,
+                             _ s : String)
     
     /**
      * Constructs a <code>IbanFormatException</code> with the
@@ -106,7 +106,7 @@ extension org.iban4j {
      * @param violation the violation.
      * @param s the detail message.
      */
-    case IbanFormatException(violation : IbanFormatViolation, s: String)
+    case IbanFormatException(_ violation : IbanFormatViolation, _ s: String)
     
     public func getFormatViolation() -> IbanFormatViolation? {
       let m = Mirror(reflecting: self).children

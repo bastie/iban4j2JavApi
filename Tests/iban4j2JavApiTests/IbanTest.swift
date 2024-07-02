@@ -13,24 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.iban4j;
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.iban4j.TestDataHelper.defaultExceptionMessage;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import XCTest
+import Foundation
+import JavApi
 
-import java.util.Random;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+@testable import iban4j2JavApi
 
+extension org.iban4j {
+
+public class CountryCodeTest : XCTestCase{
+
+  public func test_createIban() throws {
+  // How to generate Iban
+  let iban = org.iban4j.Builder()
+  .countryCode(org.iban4j.CountryCode.AT)
+  .bankCode("19043")
+  .accountNumber("00234573201")
+  .build();
+print ("Iban: \(iban)")
+  }
+}
+
+/*
 @DisplayName("Iban general test")
 final class IbanTest {
 
@@ -430,3 +438,4 @@ final class IbanTest {
         assertThat(thrown.getMessage(), containsString("nationalCheckDigit is required; it cannot be null"));
     }
 }
+*/

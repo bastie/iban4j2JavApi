@@ -24,16 +24,15 @@ extension org.iban4j.bban {
     private static var structures : [org.iban4j.CountryCode: BbanStructure] = [:]
     private static var needInit : Bool = true
     
-    private let entries : [BbanStructureEntry];
+    private var entries : [BbanStructureEntry] = [];
     
-    private init(_ entries : BbanStructureEntry...) {
-      self.entries = entries;
+    private init(_ newEntries : BbanStructureEntry...) {
       if BbanStructure.needInit {
-        BbanStructure.staticBlock()
         BbanStructure.needInit = false
+        BbanStructure.staticBlock
       }
+      self.entries.append(contentsOf: newEntries);
     }
-    
     /**
      * French sub-territories may use their own country code (BL,RE,NC,...) or FR for their IBAN.
      * Structure is the same, only the IBAN checksum differs.
@@ -57,7 +56,9 @@ extension org.iban4j.bban {
       BbanStructureEntry.accountNumber(7, "n"),
       BbanStructureEntry.nationalCheckDigit(1, "n"))
     
-    private static func staticBlock (){
+    private static let staticBlock: Void = {
+    
+//    private static func staticBlock (){
       
       structures[org.iban4j.CountryCode.AL()] =
         BbanStructure(
@@ -513,7 +514,9 @@ extension org.iban4j.bban {
           BbanStructureEntry.bankCode(5, "n"),
           BbanStructureEntry.branchCode(5, "n"),
           BbanStructureEntry.accountNumber(13, "n"))
-    }
+//    }
+    //some initialization
+  }()
 
     /**
      * @param countryCode the country code.
@@ -572,7 +575,7 @@ extension org.iban4j.bban {
     public func getBbanLength() -> Int{
       var length = 0;
       
-      for entry in entries {
+      for entry in self.entries {
         length += entry.getLength();
       }
       

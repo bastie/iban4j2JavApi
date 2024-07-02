@@ -450,7 +450,7 @@ extension org.iban4j {
       let reformattedIban : String = getBban(iban) + getCountryCodeAndCheckDigit(iban);
       var total : Int64 = 0;
       for i in 0..<reformattedIban.count {
-        let numericValue : Int = Int (reformattedIban.charAt(i).asciiValue ?? UInt8.max)
+        let numericValue : Int = Int (Character.getNumericValue(reformattedIban.charAt(i)))
         if (numericValue < 0 || numericValue > 35) {
           throw IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.IBAN_VALID_CHARACTERS, nil, nil,
                                                         reformattedIban.charAt(i),

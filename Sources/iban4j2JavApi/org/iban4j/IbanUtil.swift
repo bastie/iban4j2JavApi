@@ -420,7 +420,7 @@ extension org.iban4j {
         break;
       case .c:
         for ch in entryValue.toCharArray() {
-          if (!(ch.isLetter || ch.isNumber)) {
+          if (!(ch.isLetter || (ch.isNumber && ch.isASCII))) {
             throw IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.BBAN_ONLY_DIGITS_OR_LETTERS,
                                                           entry.getEntryType(), entryValue, ch,
                                                           "[\(entryValue)] must contain only digits or letters.")
@@ -429,7 +429,7 @@ extension org.iban4j {
         break;
       case .n:
         for ch in entryValue.toCharArray() {
-          if (!ch.isNumber) {
+          if (!(ch.isNumber && ch.isASCII)) {
             throw IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.BBAN_ONLY_DIGITS,
                                                           entry.getEntryType(), entryValue, ch,
                                                           "[\(entryValue)] must contain only digits.")
@@ -450,6 +450,7 @@ extension org.iban4j {
       let reformattedIban : String = getBban(iban) + getCountryCodeAndCheckDigit(iban);
       var total : Int64 = 0;
       for i in 0..<reformattedIban.count {
+        // FIXME: JavaDoc tells also Roman numeric like Unicode 217B (Roman twelve) are supported. In result of this you can include this in IBAN without exception is throwing.
         let numericValue : Int = Int (Character.getNumericValue(reformattedIban.charAt(i)))
         if (numericValue < 0 || numericValue > 35) {
           throw IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.IBAN_VALID_CHARACTERS, nil, nil,

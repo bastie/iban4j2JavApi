@@ -343,9 +343,6 @@ extension org.iban4j {
                                                                         "Country code is not supported.");
         }
       }
-      throw UnsupportedCountryException.UnsupportedCountryException("none",
-                                                                    "Country code is not supported.");
-
     }
 
 
@@ -356,8 +353,9 @@ extension org.iban4j {
      * @param enableLeftPadding used to determine must left pad or not, default value is false
      * @return builder Builder
      */
-    public func leftPadding(_ enableLeftPadding : Bool) {
+    public func leftPadding(_ enableLeftPadding : Bool) -> Builder{
       self.enableLeftPadding = enableLeftPadding;
+      return self
     }
     
     private var padChar : Character = "0"
@@ -365,8 +363,9 @@ extension org.iban4j {
      * @param paddingCharacter which is going to replace the default one which is '0'
      * @return builder Builder
      */
-    public func paddingCharacter(_ paddingCharacter : Character) {
+    public func paddingCharacter(_ paddingCharacter : Character) -> Builder {
       self.padChar = paddingCharacter;
+      return self
     }
     
     /**

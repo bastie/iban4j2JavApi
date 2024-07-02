@@ -1,7 +1,7 @@
 iban4j2JavApi 
 =============
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://raw.githubusercontent.com/arturmkrtchyan/iban4j/master/LICENSE.txt)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://raw.githubusercontent.com/bastie/iban4j2JavApi/master/LICENSE.txt)
 
 A Swift library for generation and validation of the International Bank Account
 Numbers (<a href="http://en.wikipedia.org/wiki/ISO_13616" target="_blank">IBAN ISO_13616</a>) and Business Identifier
@@ -10,76 +10,82 @@ Codes (<a href="http://en.wikipedia.org/wiki/ISO_9362" target="_blank">BIC ISO_9
 
 #### Iban quick examples:
 
-```java
- // How to generate Iban
- Iban iban = new Iban.Builder()
-                .countryCode(CountryCode.AT)
-                .bankCode("19043")
-                .accountNumber("00234573201")
-                .build();
-
-
- // How to create Iban object from String
- Iban iban = Iban.valueOf("DE89370400440532013000");
-
- // How to create Iban object from formatted String
- Iban iban = Iban.valueOf("DE89 3704 0044 0532 0130 00", IbanFormat.Default);
-
- // How to generate random Iban
- Iban iban = Iban.random(CountryCode.AT);
- Iban iban = Iban.random();
- Iban iban = new Iban.Builder()
-                 .countryCode(CountryCode.AT)
-                 .bankCode("19043")
-                 .buildRandom();
-
- // How to validate Iban 
- try {
-     IbanUtil.validate("AT611904300234573201");
-     IbanUtil.validate("DE89 3704 0044 0532 0130 00", IbanFormat.Default);
-     // valid
- } catch (IbanFormatException |
-          InvalidCheckDigitException |
-          UnsupportedCountryException e) {
-     // invalid
- }
+```swift
+  // How to generate Iban
+  do {
+    let iban = try org.iban4j.Builder()
+      .countryCode(org.iban4j.CountryCode.AT())
+      .bankCode("19043")
+      .accountNumber("00234573201")
+      .build();
+  }
+  
+  // How to create Iban object from String
+  do {
+    let iban = try Iban.valueOf("DE89370400440532013000");
+  }
+  
+  // How to create Iban object from formatted String
+  do {
+    let iban = try Iban.valueOf("DE89 3704 0044 0532 0130 00", IbanFormat.Default);
+  }
+  
+  // How to generate random Iban
+  do {
+    try Iban.random(org.iban4j.CountryCode.AT())
+    try Iban.random()
+    try org.iban4j.Builder()
+      .countryCode(org.iban4j.CountryCode.AT())
+      .bankCode("19043")
+      .buildRandom()
+  }
+  
+  // How to validate Iban
+  do {
+    try IbanUtil.validate("AT611904300234573201");
+    try IbanUtil.validate("DE89 3704 0044 0532 0130 00", IbanFormat.Default);
+    // valid
+  } catch {
+    // invalid
+  }
 ```
 
 #### Bic quick examples:
 
-```java
- //How to create Bic object from String
- Bic bic = Bic.valueOf("DEUTDEFF");
+```swift
+  // How to create Bic object from String
+  let bic = try Bic.valueOf("DEUTDEFF");
 
 
-         //How to validate Bic
-         try{
-         BicUtil.validate("DEUTDEFF500");
-         // valid
-         }catch(BicFormatException e){
-         // invalid
-         }
+  // How to validate Bic
+  do {
+    try BicUtil.validate("DEUTDEFF500");
+    // valid
+  } catch {
+    // invalid
+  }
 ```
 
 #### Enable left padding examples:
 
-```java
- //How to left pad('account number', 'bank code' and 'branch code') with zero
- Iban iban1=new Iban.Builder()
-         .leftPadding(true)
-         .countryCode(CountryCode.DE)
-         .bankCode("66280099")
-         .accountNumber("123456700")
-         .build();
+```swift
+  // How to left pad('account number', 'bank code' and 'branch code') with zero
+  let iban1 = try org.iban4j.Builder()
+    .leftPadding(true)
+    .countryCode(CountryCode.DE())
+    .bankCode("66280099")
+    .accountNumber("123456700")
+    .build();
 
- //How to change default padding character ('0') with other
- Iban iban2=new Iban.Builder()
-         .leftPadding(true)
-         .paddingCharacter('1')
-         .countryCode(CountryCode.DE)
-         .bankCode("66280099")
-         .accountNumber("123456700")
-         .build();
+  // How to change default padding character ('0') with other
+  let iban2 = try org.iban4j.Builder()
+    .leftPadding(true)
+    .paddingCharacter("1")
+    .countryCode(CountryCode.DE())
+    .bankCode("66280099")
+    .accountNumber("123456700")
+    .build();
+  
 ```
 
 
@@ -89,6 +95,11 @@ Codes (<a href="http://en.wikipedia.org/wiki/ISO_9362" target="_blank">BIC ISO_9
 - http://en.wikipedia.org/wiki/ISO_13616
 - http://en.wikipedia.org/wiki/ISO_9362
 - https://www.ecb.europa.eu/paym/retpaym/paymint/sepa/shared/pdf/iban_registry.pdf
+
+## Thanks to
+
+* Artur Mkrtchyan [iban4j](https://github.com/arturmkrtchyan/iban4j)
+
 
 ## License
 

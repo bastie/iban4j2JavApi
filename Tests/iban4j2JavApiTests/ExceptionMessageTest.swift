@@ -17,7 +17,7 @@ extension org.iban4j {
       XCTAssertEqual("DE",messageException.getCountryCode())
     }
     public func testMoreThanCountryCode () {
-      let messageException = UnsupportedCountryException.UnsupportedCountryException(countryCode: "DE", s: "Nice to see you!")
+      let messageException = UnsupportedCountryException.UnsupportedCountryException("DE", "Nice to see you!")
       XCTAssertEqual("DE",messageException.getCountryCode())
     }
   }

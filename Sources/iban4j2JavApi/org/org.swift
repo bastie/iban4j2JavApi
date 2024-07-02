@@ -11,10 +11,10 @@ public enum org {
     public init () {}
     public init (_ ignored : Int) {}
     public func nextInt(_ maxPlus1 : Int) -> Int {
-      return Int.random(in: Int.min...maxPlus1)
+      return Int.random(in: 0..<maxPlus1)
     }
     public func nextInt () -> Int {
-      return Int.random(in: Int.min...Int.max)
+      return nextInt(32)
     }
   }
 

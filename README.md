@@ -2,6 +2,8 @@ iban4j2JavApi
 =============
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://raw.githubusercontent.com/bastie/iban4j2JavApi/master/LICENSE.txt)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fbastie%2Fiban4j2JavApi%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/bastie/iban4j2JavApi)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fbastie%2Fiban4j2JavApi%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/bastie/iban4j2JavApi)
 
 A Swift library for generation and validation of the International Bank Account
 Numbers (<a href="http://en.wikipedia.org/wiki/ISO_13616" target="_blank">IBAN ISO_13616</a>) and Business Identifier

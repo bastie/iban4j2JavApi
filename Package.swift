@@ -25,6 +25,9 @@ let package = Package(
           name: "iban4j2JavApi",
           dependencies: [
             .product(name: "JavApi", package: "JavApi4Swift")
+          ],
+          swiftSettings: [
+            .enableExperimentalFeature("StrictConcurrency")
           ]
         ),
         .testTarget(

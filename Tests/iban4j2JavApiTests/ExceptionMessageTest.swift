@@ -10,7 +10,6 @@ import JavApi
 
 extension org.iban4j {
   
-  //@DisplayName("Country code Test class")
   public class ExceptionMessageTest : XCTestCase {
     public func testOnlyCountryCode () {
       let messageException = UnsupportedCountryException.UnsupportedCountryException(countryCode: "DE")

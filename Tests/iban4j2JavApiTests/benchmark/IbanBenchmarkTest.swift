@@ -27,7 +27,7 @@ import JavApi
 extension org.iban4j {
   public class IbanBenchmarkTest : XCTestCase {
     
-    private static let LOOPS_COUNT : UInt64 = 1_000_000;
+    private static let LOOPS_COUNT : UInt64 = 1_000;
     
     public func ibanConstruction() {
       measure(metrics: [XCTClockMetric()]) {

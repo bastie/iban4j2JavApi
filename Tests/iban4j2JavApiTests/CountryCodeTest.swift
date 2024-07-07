@@ -24,8 +24,7 @@ import JavApi
 @testable import iban4j2JavApi
 
 extension org.iban4j {
-  
-  
+    
   public class CountryCodeTest : XCTestCase{
     
     public func testGetByCodeWithAlpha2CodeShouldReturnCountry() throws {

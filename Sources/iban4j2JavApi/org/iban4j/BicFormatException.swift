@@ -109,6 +109,24 @@ extension org.iban4j {
       }
       return nil
     }
+        
+    public func getMessage () -> String {
+      let m = Mirror(reflecting: self).children
+      var result = ""
+      for case let (_?, value) in m {
+        for next in Mirror(reflecting: value).children {
+          if type(of: next.value) is String.Type {
+            let errorMessage = next.value as! String
+            result = errorMessage // bad bad thing: second string overwrite return value but it works and all that works is allowed
+          }
+        }
+      }
+      return result
+    }
+    
+    public var localizedDescription: String {
+      return getMessage()
+    }
       
     public func getExpected() -> Any? {
       let m = Mirror(reflecting: self).children
@@ -149,19 +167,19 @@ extension org.iban4j {
   }
 }
 
-  extension org.iban4j.BicFormatException {
-    public enum BicFormatViolation {
-      case UNKNOWN
-      
-      case BIC_NOT_NULL
-      case BIC_NOT_EMPTY
-      case BIC_LENGTH_8_OR_11
-      case BIC_ONLY_UPPER_CASE_LETTERS
-      
-      case BRANCH_CODE_ONLY_LETTERS_OR_DIGITS
-      case LOCATION_CODE_ONLY_LETTERS_OR_DIGITS
-      case BANK_CODE_ONLY_ALPHANUMERIC
-      case COUNTRY_CODE_ONLY_UPPER_CASE_LETTERS
-    }
-
+extension org.iban4j.BicFormatException {
+  public enum BicFormatViolation {
+    case UNKNOWN
+    
+    case BIC_NOT_NULL
+    case BIC_NOT_EMPTY
+    case BIC_LENGTH_8_OR_11
+    case BIC_ONLY_UPPER_CASE_LETTERS
+    
+    case BRANCH_CODE_ONLY_LETTERS_OR_DIGITS
+    case LOCATION_CODE_ONLY_LETTERS_OR_DIGITS
+    case BANK_CODE_ONLY_ALPHANUMERIC
+    case COUNTRY_CODE_ONLY_UPPER_CASE_LETTERS
   }
+  
+}

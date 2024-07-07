@@ -25,6 +25,7 @@ import JavApi
 
 extension org.iban4j {
   
+  /// Note: this class test agains error messages instead error itself
   public class BicUtilTest : XCTestCase{
     
     public func test_bicValidationWithEmptyStringShouldThrowException() {

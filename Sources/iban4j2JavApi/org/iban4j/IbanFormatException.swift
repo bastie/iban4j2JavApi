@@ -143,6 +143,12 @@ extension org.iban4j {
                                                    String) {
             return tupel.violation
           }
+        case 2:
+          if let tupel : (violation : IbanFormatViolation,
+                          s : String) = value as? (IbanFormatViolation,
+                                                   String) {
+            return tupel.violation
+          }
         default:
           return nil
         }
@@ -242,6 +248,20 @@ extension org.iban4j {
       return nil
     }
     
+    public func getMessage () -> String {
+      let m = Mirror(reflecting: self).children
+      var result = ""
+      for case let (_?, value) in m {
+        for next in Mirror(reflecting: value).children {
+          if type(of: next.value) is String.Type {
+            let errorMessage = next.value as! String
+            result = errorMessage // bad bad thing: second string overwrite return value but it works and all that works is allowed
+          }
+        }
+      }
+      return result
+    }
+
     public func getBbanEntryType() -> org.iban4j.bban.BbanEntryType? {
       let m = Mirror(reflecting: self).children
       for case let (_?, value) in m {

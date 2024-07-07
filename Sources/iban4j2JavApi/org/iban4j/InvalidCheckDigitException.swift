@@ -62,7 +62,21 @@ extension org.iban4j {
      * @param t the cause.
      */
     case InvalidCheckDigitException(t : Throwable)
-    
+        
+    public func getMessage () -> String {
+      let m = Mirror(reflecting: self).children
+      var result = ""
+      for case let (_?, value) in m {
+        for next in Mirror(reflecting: value).children {
+          if type(of: next.value) is String.Type {
+            let errorMessage = next.value as! String
+            result = errorMessage // bad bad thing: second string overwrite return value but it works and all that works is allowed
+          }
+        }
+      }
+      return result
+    }
+
     public func getActual() -> String {
       let m = Mirror(reflecting: self).children
       for case let (_, value) in m {

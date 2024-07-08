@@ -1,13 +1,13 @@
 {
-  "originHash" : "e86dde577220d3a416683f8840d5c333e23d02a8995e9812ab9cb569593c8868",
+  "originHash" : "cdf9b7abb4663fff5f10363da298f0003190a93889697e197346dbdc0c5e9ad7",
   "pins" : [
     {
       "identity" : "javapi4swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/bastie/JavApi4Swift.git",
       "state" : {
-        "revision" : "9d80bd3ccf83bce4fb8331664a9f85605051d5c1",
-        "version" : "0.8.0"
+        "revision" : "d20fabfcfc4a9b4029207f1dd0f7fbf2b17cb213",
+        "version" : "0.8.1"
       }
     }
   ],

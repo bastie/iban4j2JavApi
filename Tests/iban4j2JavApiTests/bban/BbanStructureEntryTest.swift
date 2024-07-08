@@ -18,22 +18,22 @@ extension org.iban4j {
       
       var seed = 1
       XCTAssertEqual(
-        try! entry.getRandom(org.Random(seed)),
-        try! entry.getRandom(org.Random(seed)),
+        try! entry.getRandom(java.util.Random(Int64(seed))),
+        try! entry.getRandom(java.util.Random(Int64(seed))),
         "expect that creating \(entry) with seed '\(seed)' is deterministic"
       )
 
       seed = 2
       XCTAssertEqual(
-        try! entry.getRandom(org.Random(seed)),
-        try! entry.getRandom(org.Random(seed)),
+        try! entry.getRandom(java.util.Random(Int64(seed))),
+        try! entry.getRandom(java.util.Random(Int64(seed))),
         "expect that creating \(entry) with seed '\(seed)' is deterministic"
       )
       
       seed = 3
       XCTAssertEqual(
-        try! entry.getRandom(org.Random(seed)),
-        try! entry.getRandom(org.Random(seed)),
+        try! entry.getRandom(java.util.Random(Int64(seed))),
+        try! entry.getRandom(java.util.Random(Int64(seed))),
         "expect that creating \(entry) with seed '\(seed)' is deterministic"
       )
     }
@@ -43,22 +43,22 @@ extension org.iban4j {
       
       var seed = 1
       XCTAssertEqual(
-        try! entry.getRandom(org.Random(seed)),
-        try! entry.getRandom(org.Random(seed)),
+        try! entry.getRandom(java.util.Random(Int64(seed))),
+        try! entry.getRandom(java.util.Random(Int64(seed))),
         "expect that creating \(entry) with seed '\(seed)' is deterministic"
       )
       
       seed = 2
       XCTAssertEqual(
-        try! entry.getRandom(org.Random(seed)),
-        try! entry.getRandom(org.Random(seed)),
+        try! entry.getRandom(java.util.Random(Int64(seed))),
+        try! entry.getRandom(java.util.Random(Int64(seed))),
         "expect that creating \(entry) with seed '\(seed)' is deterministic"
       )
       
       seed = 3
       XCTAssertEqual(
-        try! entry.getRandom(org.Random(seed)),
-        try! entry.getRandom(org.Random(seed)),
+        try! entry.getRandom(java.util.Random(Int64(seed))),
+        try! entry.getRandom(java.util.Random(Int64(seed))),
         "expect that creating \(entry) with seed '\(seed)' is deterministic"
       )
     }
@@ -68,22 +68,22 @@ extension org.iban4j {
       
       var seed = 1
       XCTAssertEqual(
-        try! entry.getRandom(org.Random(seed)),
-        try! entry.getRandom(org.Random(seed)),
+        try! entry.getRandom(java.util.Random(Int64(seed))),
+        try! entry.getRandom(java.util.Random(Int64(seed))),
         "expect that creating \(entry) with seed '\(seed)' is deterministic"
       )
       
       seed = 2
       XCTAssertEqual(
-        try! entry.getRandom(org.Random(seed)),
-        try! entry.getRandom(org.Random(seed)),
+        try! entry.getRandom(java.util.Random(Int64(seed))),
+        try! entry.getRandom(java.util.Random(Int64(seed))),
         "expect that creating \(entry) with seed '\(seed)' is deterministic"
       )
       
       seed = 3
       XCTAssertEqual(
-        try! entry.getRandom(org.Random(seed)),
-        try! entry.getRandom(org.Random(seed)),
+        try! entry.getRandom(java.util.Random(Int64(seed))),
+        try! entry.getRandom(java.util.Random(Int64(seed))),
         "expect that creating \(entry) with seed '\(seed)' is deterministic"
       )
     }

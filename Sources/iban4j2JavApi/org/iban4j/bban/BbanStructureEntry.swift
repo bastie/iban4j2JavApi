@@ -134,15 +134,15 @@ extension org.iban4j.bban {
     }
     
     public func getRandom() throws -> String {
-      return try getRandom(org.Random()); // TODO: create Random Implementation in JavApi4Swift
+      return try getRandom(java.util.Random()); // TODO: create Random Implementation in JavApi4Swift
     }
     
-    public func getRandom(_ _random : org.Random) throws -> String {
+    public func getRandom(_ _random : java.util.Random) throws -> String {
       var random = _random
       // Create a new seeded Random, so it doesn't matter how this Random is used, it won't affect subsequent usages
       // of the original Random. (which can impact seeded behaviour when many IBANs are generated or the number of
       // IBAN entries change).
-      random = org.Random(random.nextInt());
+      random = java.util.Random(Int64(random.nextInt()));
       
       var s = StringBuilder();
       let charChoices : [Character]? = try org.iban4j.bban.BbanStructureEntry.charByCharacterType.get(characterType);
@@ -151,7 +151,7 @@ extension org.iban4j.bban {
       }
       
       for _ in 0..<getLength() {
-        s = s.append(charChoices![random.nextInt(charChoices!.count)]);
+        s = s.append(charChoices![try! random.nextInt(charChoices!.count)]);
       }
       return s.toString();
     }

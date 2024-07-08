@@ -203,7 +203,7 @@ extension org.iban4j {
       return try org.iban4j.Builder().buildRandom();
     }
     
-    public static func random(_ random : org.Random) throws -> Iban{
+    public static func random(_ random : java.util.Random) throws -> Iban{
       return try org.iban4j.Builder(random).buildRandom();
     }
     

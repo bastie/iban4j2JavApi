@@ -32,12 +32,12 @@ extension org.iban4j {
     private var ownerAccountType : String?
     private var identificationNumber : String?
     
-    private let random : org.Random;
+    private let random : java.util.Random;
     
     /**
      * Creates an Iban Builder instance.
      */
-    public init(_ random : org.Random) {
+    public init(_ random : java.util.Random) {
       self.random = random
     }
     
@@ -45,7 +45,7 @@ extension org.iban4j {
      * Creates an Iban Builder instance.
      */
     public init() {
-      self.random = org.Random()
+      self.random = java.util.Random()
     }
     
     /**
@@ -283,17 +283,17 @@ extension org.iban4j {
       // Create a new seeded Random, so it doesn't matter how this Random is used, it won't affect subsequent usages
       // of the original Random. (which can impact seeded behaviour when many IBANs are generated or the number of
       // IBAN entries change).
-      let random : org.Random = org.Random(self.random.nextInt());
+      let random : java.util.Random = java.util.Random(Int64(self.random.nextInt()));
       
       if (countryCode == nil) {
         let countryCodes = org.iban4j.bban.BbanStructure.supportedCountries();
-        _ = self.countryCode(countryCodes[random.nextInt(countryCodes.count)])
+        _ = self.countryCode(countryCodes[try! random.nextInt(countryCodes.count)])
       }
       try fillMissingFieldsRandomly(random);
       return try build();
     }
     
-    private func fillMissingFieldsRandomly(_ random : org.Random) throws {
+    private func fillMissingFieldsRandomly(_ random : java.util.Random) throws {
       if let countryCode {
         let structure = org.iban4j.bban.BbanStructure.forCountry(countryCode);
         

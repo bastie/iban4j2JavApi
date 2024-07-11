@@ -21,7 +21,7 @@ extension org.iban4j {
   /**
    * Iban Builder Class
    */
-  public final class Builder {
+  open class Builder {
     
     private var countryCode : CountryCode?
     private var bankCode : String?
@@ -278,7 +278,7 @@ extension org.iban4j {
      * @exception UnsupportedCountryException if country is not supported
      *
      */
-    public func buildRandom() throws -> Iban {//IbanFormatException, IllegalArgumentException, UnsupportedCountryException {
+    open func buildRandom() throws -> Iban {//IbanFormatException, IllegalArgumentException, UnsupportedCountryException {
       
       // Create a new seeded Random, so it doesn't matter how this Random is used, it won't affect subsequent usages
       // of the original Random. (which can impact seeded behaviour when many IBANs are generated or the number of

@@ -23,14 +23,10 @@ Codes (<a href="http://en.wikipedia.org/wiki/ISO_9362" target="_blank">BIC ISO_9
   }
   
   // How to create Iban object from String
-  do {
-    let iban = try Iban.valueOf("DE89370400440532013000");
-  }
+  let iban = IBAN(from: "DE89370400440532013000")
   
   // How to create Iban object from formatted String
-  do {
-    let iban = try Iban.valueOf("DE89 3704 0044 0532 0130 00", IbanFormat.Default);
-  }
+  let iban = IBAN(from: "DE89 3704 0044 0532 0130 00");
   
   // How to generate random Iban
   do {
@@ -43,13 +39,13 @@ Codes (<a href="http://en.wikipedia.org/wiki/ISO_9362" target="_blank">BIC ISO_9
   }
   
   // How to validate Iban
-  do {
-    try IbanUtil.validate("AT611904300234573201");
-    try IbanUtil.validate("DE89 3704 0044 0532 0130 00", IbanFormat.Default);
-    // valid
-  } catch {
-    // invalid
-  }
+    if let _ = IBAN(from: "DE89370400440532013000", withValidation: true),
+       let _ = IBAN(from: "DE89 3704 0044 0532 0130 00", withValidation: true){
+      // valid
+    }
+    else {
+      // invalid
+    }
 ```
 
 #### Bic quick examples:

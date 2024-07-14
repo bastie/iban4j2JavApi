@@ -16,9 +16,9 @@ Codes (<a href="http://en.wikipedia.org/wiki/ISO_9362" target="_blank">BIC ISO_9
   // How to generate Iban
   do {
     let iban = try org.iban4j.Builder()
-      .countryCode(org.iban4j.CountryCode.AT())
-      .bankCode("19043")
-      .accountNumber("00234573201")
+      .setCountryCode(org.iban4j.CountryCode.AT())
+      .setBankCode("19043")
+      .setAccountNumber("00234573201")
       .build();
   }
   
@@ -33,8 +33,8 @@ Codes (<a href="http://en.wikipedia.org/wiki/ISO_9362" target="_blank">BIC ISO_9
     try Iban.random(org.iban4j.CountryCode.AT())
     try Iban.random()
     try org.iban4j.Builder()
-      .countryCode(org.iban4j.CountryCode.AT())
-      .bankCode("19043")
+      .setCountryCode(org.iban4j.CountryCode.AT())
+      .setBankCode("19043")
       .buildRandom()
   }
   
@@ -70,29 +70,32 @@ Codes (<a href="http://en.wikipedia.org/wiki/ISO_9362" target="_blank">BIC ISO_9
   // How to left pad('account number', 'bank code' and 'branch code') with zero
   let iban1 = try org.iban4j.Builder()
     .leftPadding(true)
-    .countryCode(CountryCode.DE())
-    .bankCode("66280099")
-    .accountNumber("123456700")
+    .setCountryCode(CountryCode.DE())
+    .setBankCode("66280099")
+    .setAccountNumber("123456700")
     .build();
 
   // How to change default padding character ('0') with other
   let iban2 = try org.iban4j.Builder()
     .leftPadding(true)
     .paddingCharacter("1")
-    .countryCode(CountryCode.DE())
-    .bankCode("66280099")
-    .accountNumber("123456700")
+    .setCountryCode(CountryCode.DE())
+    .setBankCode("66280099")
+    .setAccountNumber("123456700")
     .build();
   
 ```
-
-
 
 #### References
 
 - http://en.wikipedia.org/wiki/ISO_13616
 - http://en.wikipedia.org/wiki/ISO_9362
 - https://www.ecb.europa.eu/paym/retpaym/paymint/sepa/shared/pdf/iban_registry.pdf
+
+
+#### Note
+
+Versions later than 3.9 are not call compatible with iban4j.
 
 ## Thanks to
 

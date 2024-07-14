@@ -30,10 +30,10 @@ extension org.iban4j {
     public func test_ibanConstructionWithNonSupportedCountryShouldThrowException() {
       do {
         _ = try Builder ()
-          .countryCode(CountryCode.AM())
-          .bankCode("0001")
-          .branchCode("2030")
-          .accountNumber("200359100100")
+          .setCountryCode(CountryCode.AM())
+          .setBankCode("0001")
+          .setBranchCode("2030")
+          .setAccountNumber("200359100100")
           .build()
       }
       catch is UnsupportedCountryException {
@@ -119,9 +119,9 @@ extension org.iban4j {
     public func test_ibanConstructionWithoutCountryShouldThrowException() {
       do {
       _ = try Builder()
-        .bankCode("0001")
-        .branchCode("2030")
-        .accountNumber("200359100100")
+        .setBankCode("0001")
+        .setBranchCode("2030")
+        .setAccountNumber("200359100100")
         .build()
       }
       catch is IbanFormatException {
@@ -135,9 +135,9 @@ extension org.iban4j {
     public func test_ibanConstructionWithoutBankCodeShouldThrowException() {
       do {
         _ = try Builder()
-        .countryCode(CountryCode.AM())
-        .branchCode("2030")
-        .accountNumber("200359100100")
+        .setCountryCode(CountryCode.AM())
+        .setBranchCode("2030")
+        .setAccountNumber("200359100100")
         .build()
       }
       catch is IbanFormatException {
@@ -151,9 +151,9 @@ extension org.iban4j {
     public func test_ibanConstructionWithoutAccountNumberShouldThrowException() {
       do {
         _ = try Builder()
-          .countryCode(CountryCode.AM())
-          .bankCode("0001")
-          .branchCode("2030")
+          .setCountryCode(CountryCode.AM())
+          .setBankCode("0001")
+          .setBranchCode("2030")
           .build()
       }
       catch is IbanFormatException {
@@ -167,9 +167,9 @@ extension org.iban4j {
     public func test_ibanConstructionWithInvalidCharacterShouldThrowException() {
       do {
         _ = try Builder()
-        .countryCode(CountryCode.AT())
-        .bankCode("19043")
-        .accountNumber("A0234573201")
+        .setCountryCode(CountryCode.AT())
+        .setBankCode("19043")
+        .setAccountNumber("A0234573201")
         .build()
       }
       catch is IbanFormatException {
@@ -183,9 +183,9 @@ extension org.iban4j {
     public func test_ibanConstructionWithShortBankCodeShouldThrowException() {
       do {
         _ = try Builder()
-          .countryCode(CountryCode.AT())
-          .bankCode("1904")
-          .accountNumber("A0234573201")
+          .setCountryCode(CountryCode.AT())
+          .setBankCode("1904")
+          .setAccountNumber("A0234573201")
           .build()
       }
       catch is IbanFormatException {
@@ -199,9 +199,9 @@ extension org.iban4j {
     public func test_ibanConstructionWithShortBankCodeShouldThrowExceptionIfValidationRequested() {
       do {
         _ = try Builder()
-          .countryCode(CountryCode.AT())
-          .bankCode("1904")
-          .accountNumber("A0234573201")
+          .setCountryCode(CountryCode.AT())
+          .setBankCode("1904")
+          .setAccountNumber("A0234573201")
           .build(true)
       }
       catch is IbanFormatException {
@@ -214,7 +214,7 @@ extension org.iban4j {
     
     
     public func test_ibanConstructionRandomAcctRetainsSpecifiedCountry() {
-      var iban = try? Builder().countryCode(CountryCode.AT()).buildRandom();
+      var iban = try? Builder().setCountryCode(CountryCode.AT()).buildRandom();
       XCTAssertEqual(CountryCode.AT(), iban!.getCountryCode());
       
       iban = try? Iban.random(CountryCode.AT());
@@ -224,8 +224,8 @@ extension org.iban4j {
     
     public func test_ibanConstructionRandomRetainsSpecifiedBankCode() {
       let iban = try? Builder()
-        .countryCode(CountryCode.AT())
-        .bankCode("12345")
+        .setCountryCode(CountryCode.AT())
+        .setBankCode("12345")
         .buildRandom();
       XCTAssertEqual("12345", iban!.getBankCode());
     }
@@ -233,8 +233,8 @@ extension org.iban4j {
     
     public func test_ibanConstructionRandomDoesNotOverwriteBankAccount() {
       let iban = try? Builder()
-        .countryCode(CountryCode.AT())
-        .accountNumber("12345678901")
+        .setCountryCode(CountryCode.AT())
+        .setAccountNumber("12345678901")
         .buildRandom();
       XCTAssertEqual("12345678901", iban!.getAccountNumber());
     }
@@ -242,8 +242,8 @@ extension org.iban4j {
     
     public func test_ibanConstructionRandomDoesNotOverwriteBranchCode() {
       let iban = try? Builder()
-        .countryCode(CountryCode.AL())
-        .branchCode("1234")
+        .setCountryCode(CountryCode.AL())
+        .setBranchCode("1234")
         .buildRandom();
       XCTAssertEqual("1234", iban!.getBranchCode());
     }
@@ -251,8 +251,8 @@ extension org.iban4j {
     
     public func test_ibanConstructionRandomDoesNotOverwriteNationalCheckDigit() {
       let iban = try? Builder()
-        .countryCode(CountryCode.AL())
-        .nationalCheckDigit("1")
+        .setCountryCode(CountryCode.AL())
+        .setNationalCheckDigit("1")
         .buildRandom();
       XCTAssertEqual("1", iban!.getNationalCheckDigit());
     }
@@ -260,8 +260,8 @@ extension org.iban4j {
     
     public func test_ibanConstructionRandomDoesNotOverwriteAccountType() {
       let iban = try? Builder()
-        .countryCode(CountryCode.BR())
-        .accountType("A")
+        .setCountryCode(CountryCode.BR())
+        .setAccountType("A")
         .buildRandom();
       XCTAssertEqual("A", iban!.getAccountType());
     }
@@ -269,8 +269,8 @@ extension org.iban4j {
     
     public func test_ibanConstructionRandomDoesNotOverwriteOwnerAccountType() {
       let iban = try? Builder()
-        .countryCode(CountryCode.BR())
-        .ownerAccountType("C")
+        .setCountryCode(CountryCode.BR())
+        .setOwnerAccountType("C")
         .buildRandom();
       XCTAssertEqual("C", iban!.getOwnerAccountType());
     }
@@ -278,8 +278,8 @@ extension org.iban4j {
     
     public func test_ibanConstructionRandomDoesNotOverwriteIdentificationNumber() {
       let iban = try? Builder()
-        .countryCode(CountryCode.IS())
-        .identificationNumber("1234567890")
+        .setCountryCode(CountryCode.IS())
+        .setIdentificationNumber("1234567890")
         .buildRandom()
       XCTAssertEqual("1234567890", iban!.getIdentificationNumber())
     }

@@ -28,9 +28,9 @@ extension org.iban4j {
       // How to generate Iban
       do {
         let iban = try org.iban4j.Builder()
-          .countryCode(org.iban4j.CountryCode.AT())
-          .bankCode("19043")
-          .accountNumber("00234573201")
+          .setCountryCode(org.iban4j.CountryCode.AT())
+          .setBankCode("19043")
+          .setAccountNumber("00234573201")
           .build();
         
         XCTAssertNotNil(iban)
@@ -58,8 +58,8 @@ extension org.iban4j {
         )
         XCTAssertNoThrow(
           try org.iban4j.Builder()
-            .countryCode(org.iban4j.CountryCode.AT())
-            .bankCode("19043")
+            .setCountryCode(org.iban4j.CountryCode.AT())
+            .setBankCode("19043")
             .buildRandom()
         )
       }
@@ -76,9 +76,9 @@ extension org.iban4j {
       // How to left pad('account number', 'bank code' and 'branch code') with zero
       let iban1 = try org.iban4j.Builder()
         .leftPadding(true)
-        .countryCode(CountryCode.DE())
-        .bankCode("66280099")
-        .accountNumber("123456700")
+        .setCountryCode(CountryCode.DE())
+        .setBankCode("66280099")
+        .setAccountNumber("123456700")
         .build();
       XCTAssertNotNil(iban1)
       
@@ -86,9 +86,9 @@ extension org.iban4j {
       let iban2 = try org.iban4j.Builder()
         .leftPadding(true)
         .paddingCharacter("1")
-        .countryCode(CountryCode.DE())
-        .bankCode("66280099")
-        .accountNumber("123456700")
+        .setCountryCode(CountryCode.DE())
+        .setBankCode("66280099")
+        .setAccountNumber("123456700")
         .build();
       XCTAssertNotNil(iban2)
     }
@@ -96,9 +96,9 @@ extension org.iban4j {
     public func testRomanNumericIBANThrowsError () throws {
       XCTAssertThrowsError(
         try org.iban4j.Builder()
-          .countryCode(org.iban4j.CountryCode.AT())
-          .bankCode("1904\u{217B}")
-          .accountNumber("00234573201")
+          .setCountryCode(org.iban4j.CountryCode.AT())
+          .setBankCode("1904\u{217B}")
+          .setAccountNumber("00234573201")
           .build()
       )
     }

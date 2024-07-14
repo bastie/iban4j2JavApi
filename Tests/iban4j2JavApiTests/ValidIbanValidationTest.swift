@@ -18,10 +18,10 @@ extension org.iban4j {
       // iban with 01 check digit
       let first =
       (try! Builder()
-        .countryCode(CountryCode.TR())
-        .bankCode("00123")
-        .accountNumber("0882101517977799")
-        .nationalCheckDigit("0")
+        .setCountryCode(CountryCode.TR())
+        .setBankCode("00123")
+        .setAccountNumber("0882101517977799")
+        .setNationalCheckDigit("0")
         .build(),
        "TR010012300882101517977799"
       )
@@ -29,10 +29,10 @@ extension org.iban4j {
       // iban with 98 check digit
       let second =
       (try! Builder()
-        .countryCode(CountryCode.TR())
-        .bankCode("00123")
-        .accountNumber("0882101517977799")
-        .nationalCheckDigit("0")
+        .setCountryCode(CountryCode.TR())
+        .setBankCode("00123")
+        .setAccountNumber("0882101517977799")
+        .setNationalCheckDigit("0")
         .build(),
        "TR980012300882101517977799"
       )

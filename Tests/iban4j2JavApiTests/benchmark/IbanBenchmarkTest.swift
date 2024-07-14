@@ -33,9 +33,9 @@ extension org.iban4j {
       measure(metrics: [XCTClockMetric()]) {
         for _ in 0..<org.iban4j.IbanBenchmarkTest.LOOPS_COUNT {
           let iban = try! Builder()
-            .countryCode(CountryCode.DE())
-            .bankCode("52060170")
-            .accountNumber("0012335785")
+            .setCountryCode(CountryCode.DE())
+            .setBankCode("52060170")
+            .setAccountNumber("0012335785")
             .build()
           XCTAssertNotNil(iban)
         }

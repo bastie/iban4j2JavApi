@@ -70,34 +70,27 @@ extension org.iban4j {
         throw IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.IBAN_NOT_EMPTY,
                                                                      "Empty string can't be a valid Iban.")
       }
-      
-      let validCountryCode = validateCountryCode(iban)
-      switch validCountryCode {
-      case .success(_) : break
-      case .failure(let error) : throw error
-      }
 
-      let presentCheckDigit = validateCheckDigitPresence(iban)
-      switch presentCheckDigit {
-      case .success(_) : break
-      case .failure(let error) : throw error
-      }
-
-      // Bban structure can be build
-      let structure : org.iban4j.bban.BbanStructure = getBbanStructure(iban);
-      let validBBanLenght = validateBbanLength(iban, structure)
-      switch validBBanLenght {
-      case .failure(let error): throw error
-      case .success(_) : break
-      }
+      let result: Result<Any, Error> = validateCountryCode(iban)
+        .flatMap { _ in
+          validateCheckDigitPresence(iban)
+            .flatMap { _ in
+              let structure = getBbanStructure(iban)
+              return validateBbanLength(iban, structure)
+                .flatMap { _ in
+                  validateBbanEntries(iban, structure)
+                    .flatMap { _ in
+                      validateCheckDigit(iban)
+                    }
+                }
+            }
+        }
       
-      let validBBanEntries = validateBbanEntries(iban, structure)
-      let validCheckDigit = validateCheckDigit(iban)
-      
-      switch (validBBanEntries, validCheckDigit) {
-      case (.success(_), .success(_)): break
-      case (.failure(let error), _): throw error
-      case (_, .failure(let error)): throw error
+      switch result {
+      case .success(_):
+        break
+      case .failure(let error):
+        throw error
       }
     }
     
@@ -132,8 +125,7 @@ extension org.iban4j {
         try validate(ibanWithoutSpaces);
         if toFormattedString(ibanWithoutSpaces) != iban {
           throw IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.IBAN_FORMATTING,
-                                                        "Iban must be formatted using 4 characters and space combination. " +
-                                                        "Instead of \(iban)");
+                                                        "Iban must be formatted using 4 characters and space combination. Instead of \(iban)");
         }
         break;
       default:
@@ -328,7 +320,7 @@ extension org.iban4j {
       return ibanBuffer.trim();
     }
     
-    private static func validateCheckDigit(_ iban : String) -> Result<Any?, Error> {
+    private static func validateCheckDigit(_ iban : String) -> Result<Any, Error> {
       let caluclatedMod = calculateMod(iban)
       switch (caluclatedMod) {
       case .success (let calc):
@@ -414,7 +406,7 @@ extension org.iban4j {
     }
     
     private static func validateBbanLength(_ iban : String,
-                                           _ structure : org.iban4j.bban.BbanStructure) -> Result<Any?, IbanFormatException> {
+                                           _ structure : org.iban4j.bban.BbanStructure) -> Result<Any, Error> {
       let expectedBbanLength : Int = structure.getBbanLength();
       let bban : String = getBban(iban);
       let bbanLength : Int = bban.count
@@ -426,7 +418,7 @@ extension org.iban4j {
       return .success(self)
     }
     
-    private static func validateBbanEntries(_ iban : String, _ structure : org.iban4j.bban.BbanStructure) -> Result<Any?, Error> {
+    private static func validateBbanEntries(_ iban : String, _ structure : org.iban4j.bban.BbanStructure) -> Result<Any, Error> {
       let bban : String = getBban(iban);
       var bbanEntryOffset = 0;
       for entry in structure.getEntries() {

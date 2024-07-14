@@ -54,8 +54,8 @@ extension org.iban4j {
      * @param countryCode CountryCode
      * @return builder Builder
      */
-    public func countryCode(_ countryCode : CountryCode ) -> Builder {
-      self.countryCode = countryCode;
+    public func setCountryCode(_ newCountryCode : CountryCode ) -> Builder {
+      self.countryCode = newCountryCode;
       return self;
     }
     
@@ -65,8 +65,8 @@ extension org.iban4j {
      * @param bankCode String
      * @return builder Builder
      */
-    public func bankCode(_ bankCode : String) -> Builder {
-      self.bankCode = bankCode;
+    public func setBankCode(_ newBankCode : String) -> Builder {
+      self.bankCode = newBankCode;
       return self;
     }
     
@@ -76,8 +76,8 @@ extension org.iban4j {
      * @param branchCode String
      * @return builder Builder
      */
-    public func branchCode(_ branchCode : String) -> Builder {
-      self.branchCode = branchCode;
+    public func setBranchCode(_ newBranchCode : String) -> Builder {
+      self.branchCode = newBranchCode;
       return self;
     }
     
@@ -87,8 +87,8 @@ extension org.iban4j {
      * @param accountNumber String
      * @return builder Builder
      */
-    public func accountNumber(_ accountNumber : String) -> Builder {
-      self.accountNumber = accountNumber;
+    public func setAccountNumber(_ newAccountNumber : String) -> Builder {
+      self.accountNumber = newAccountNumber;
       return self;
     }
     
@@ -98,8 +98,8 @@ extension org.iban4j {
      * @param nationalCheckDigit String
      * @return builder Builder
      */
-    public func nationalCheckDigit(_ nationalCheckDigit : String) -> Builder {
-      self.nationalCheckDigit = nationalCheckDigit;
+    public func setNationalCheckDigit(_ newNationalCheckDigit : String) -> Builder {
+      self.nationalCheckDigit = newNationalCheckDigit;
       return self;
     }
     
@@ -109,8 +109,8 @@ extension org.iban4j {
      * @param accountType String
      * @return builder Builder
      */
-    public func accountType(_ accountType : String ) -> Builder {
-      self.accountType = accountType;
+    public func setAccountType(_ newAccountType : String ) -> Builder {
+      self.accountType = newAccountType;
       return self;
     }
     
@@ -120,8 +120,8 @@ extension org.iban4j {
      * @param ownerAccountType String
      * @return builder Builder
      */
-    public func ownerAccountType(_ ownerAccountType : String ) -> Builder {
-      self.ownerAccountType = ownerAccountType;
+    public func setOwnerAccountType(_ newOwnerAccountType : String ) -> Builder {
+      self.ownerAccountType = newOwnerAccountType;
       return self
     }
     
@@ -131,8 +131,8 @@ extension org.iban4j {
      * @param identificationNumber String
      * @return builder Builder
      */
-    public func identificationNumber(_ identificationNumber : String ) -> Builder {
-      self.identificationNumber = identificationNumber;
+    public func setIdentificationNumber(_ newIdentificationNumber : String ) -> Builder {
+      self.identificationNumber = newIdentificationNumber;
       return self
     }
         
@@ -290,7 +290,7 @@ extension org.iban4j {
       
       if (countryCode == nil) {
         let countryCodes = org.iban4j.bban.BbanStructure.supportedCountries();
-        _ = self.countryCode(countryCodes[try! random.nextInt(countryCodes.count)])
+        _ = self.setCountryCode(countryCodes[try! random.nextInt(countryCodes.count)])
       }
       try fillMissingFieldsRandomly(random);
       return try build();

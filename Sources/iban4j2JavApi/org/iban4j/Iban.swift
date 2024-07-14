@@ -208,7 +208,7 @@ extension org.iban4j {
     }
     
     public static func random(_ cc : CountryCode) throws -> Iban {
-      return try org.iban4j.Builder().countryCode(cc).buildRandom();
+      return try org.iban4j.Builder().setCountryCode(cc).buildRandom();
     }
     
     public func equals(_ obj : Any) -> Bool{

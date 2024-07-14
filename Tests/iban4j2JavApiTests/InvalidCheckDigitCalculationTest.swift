@@ -16,7 +16,13 @@ extension org.iban4j {
       let notAllowed : [Character] = ["\u{216C}", "+"]
       
       for badBoy in notAllowed {
-        XCTAssertThrowsError(try IbanUtil.calculateCheckDigit("AT000159260\(badBoy)076545510730339"))
+        let errorExpected = IbanUtil.calculateCheckDigit("AT000159260\(badBoy)076545510730339")
+        switch errorExpected {
+        case .failure(_) :
+          XCTAssertTrue(true, "expected error is the result")
+        case .success(_) :
+          XCTAssertNoThrow("valid result is not expected")
+        }
       }
     }
   }

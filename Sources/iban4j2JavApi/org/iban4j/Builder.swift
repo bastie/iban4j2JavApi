@@ -166,15 +166,18 @@ extension org.iban4j {
       // iban is formatted with default check digit.
       let formattedIban = try formatIban();
       
-      let checkDigit = try IbanUtil.calculateCheckDigit(formattedIban);
-      
-      // replace default check digit with calculated check digit
-      let ibanValue = IbanUtil.replaceCheckDigit(formattedIban, checkDigit);
-      
-      if (validate) {
-        try IbanUtil.validate(ibanValue);
+      let calcCheckDigit = IbanUtil.calculateCheckDigit(formattedIban);
+      switch (calcCheckDigit) {
+      case .failure(let error) : throw error
+      case .success(let checkDigit) :
+        // replace default check digit with calculated check digit
+        let ibanValue = IbanUtil.replaceCheckDigit(formattedIban, checkDigit);
+        
+        if (validate) {
+          try IbanUtil.validate(ibanValue);
+        }
+        return Iban(ibanValue);
       }
-      return Iban(ibanValue);
     }
     
     private func require(_ countryCode : CountryCode?,

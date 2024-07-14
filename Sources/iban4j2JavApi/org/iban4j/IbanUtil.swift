@@ -44,13 +44,17 @@ extension org.iban4j {
      *
      * @return check digit as String
      */
-    public static func calculateCheckDigit(_ iban : String) throws -> String {//IbanFormatException {
+    public static func calculateCheckDigit(_ iban : String) -> Result<String,IbanFormatException> {
       let reformattedIban : String = replaceCheckDigit(iban,
                                                        Iban.DEFAULT_CHECK_DIGIT);
-      let modResult : Int = try calculateMod(reformattedIban);
-      let checkDigitIntValue : Int = (98 - modResult);
-      let checkDigit : String = "\(checkDigitIntValue)"
-      return checkDigitIntValue > 9 ? checkDigit : "0" + checkDigit;
+      let calculatedResult = calculateMod(reformattedIban)
+      switch calculatedResult {
+      case .success (let modResult) :
+        let checkDigitIntValue : Int = (98 - modResult);
+        let checkDigit : String = "\(checkDigitIntValue)"
+        return .success(checkDigitIntValue > 9 ? checkDigit : "0\(checkDigit)")
+      case .failure (let error) : return .failure(error)
+      }
     }
     
     /**
@@ -62,19 +66,38 @@ extension org.iban4j {
      *         InvalidCheckDigitException if iban has invalid check digit.
      */
     public static func validate(_ iban : String) throws {//IbanFormatException, InvalidCheckDigitException, UnsupportedCountryException {
-      do {
-        try validateEmpty(iban);
-        try validateCountryCode(iban);
-        try validateCheckDigitPresence(iban);
-        
-        let structure : org.iban4j.bban.BbanStructure = getBbanStructure(iban);
-        
-        try validateBbanLength(iban, structure);
-        try validateBbanEntries(iban, structure);
-        
-        try validateCheckDigit(iban);
-      } catch {
-        throw error
+      guard 0 < iban.count else { // let notEmpty = validateEmpty(iban)
+        throw IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.IBAN_NOT_EMPTY,
+                                                                     "Empty string can't be a valid Iban.")
+      }
+      
+      let validCountryCode = validateCountryCode(iban)
+      switch validCountryCode {
+      case .success(_) : break
+      case .failure(let error) : throw error
+      }
+
+      let presentCheckDigit = validateCheckDigitPresence(iban)
+      switch presentCheckDigit {
+      case .success(_) : break
+      case .failure(let error) : throw error
+      }
+
+      // Bban structure can be build
+      let structure : org.iban4j.bban.BbanStructure = getBbanStructure(iban);
+      let validBBanLenght = validateBbanLength(iban, structure)
+      switch validBBanLenght {
+      case .failure(let error): throw error
+      case .success(_) : break
+      }
+      
+      let validBBanEntries = validateBbanEntries(iban, structure)
+      let validCheckDigit = validateCheckDigit(iban)
+      
+      switch (validBBanEntries, validCheckDigit) {
+      case (.success(_), .success(_)): break
+      case (.failure(let error), _): throw error
+      case (_, .failure(let error)): throw error
       }
     }
     
@@ -270,7 +293,11 @@ extension org.iban4j {
     }
     
     static func calculateCheckDigit(_ iban : Iban) throws -> String {
-      return try calculateCheckDigit(iban.toString());
+      let checkDigit = calculateCheckDigit(iban.toString())
+      switch checkDigit {
+      case .success(let digit) : return digit
+      case .failure(let error) : throw error
+      }
     }
     
     /**
@@ -301,34 +328,39 @@ extension org.iban4j {
       return ibanBuffer.trim();
     }
     
-    private static func validateCheckDigit(_ iban : String) throws {
-      do {
-        if (try calculateMod(iban) != 1) {
+    private static func validateCheckDigit(_ iban : String) -> Result<Any?, Error> {
+      let caluclatedMod = calculateMod(iban)
+      switch (caluclatedMod) {
+      case .success (let calc):
+        if calc != 1 {
           let checkDigit = getCheckDigit(iban);
-          let expectedCheckDigit = try calculateCheckDigit(iban);
-          throw InvalidCheckDigitException.InvalidCheckDigitException(
-            checkDigit, expectedCheckDigit,
-            "\(iban) has invalid check digit: \(checkDigit), " +
-            "expected check digit is: \(expectedCheckDigit)")
+          let calcExpectedCheckDigit = calculateCheckDigit(iban);
+          switch calcExpectedCheckDigit {
+          case .success(let expectedCheckDigit):
+            if checkDigit == expectedCheckDigit {
+              return .success(self)
+            }
+            else {
+              return .failure(InvalidCheckDigitException.InvalidCheckDigitException(
+                checkDigit, expectedCheckDigit,
+                "\(iban) has invalid check digit: \(checkDigit), " +
+                "expected check digit is: \(expectedCheckDigit)"))
+            }
+          case .failure(let error): return .failure(error)
+          }
         }
-      }
-      catch {
-        throw error
-      }
-    }
-    
-    private static func validateEmpty(_ iban : String) throws {
-      if(iban.count == 0) {
-        throw IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.IBAN_NOT_EMPTY,
-                                                      "Empty string can't be a valid Iban.");
+        else {
+          return .success(self)
+        }
+      case .failure(let error): return .failure(error)
       }
     }
     
-    private static func validateCountryCode(_ iban : String) throws {
+    private static func validateCountryCode(_ iban : String) ->Result<Any, Error> {
       // check if iban contains 2 char country code
-      if(iban.count < COUNTRY_CODE_LENGTH) {
-        throw IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.COUNTRY_CODE_TWO_LETTERS, iban,
-                                                      "Iban must contain 2 char country code.");
+      guard iban.count >= COUNTRY_CODE_LENGTH else {
+        return .failure( IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.COUNTRY_CODE_TWO_LETTERS, iban,
+                                                      "Iban must contain 2 char country code."))
       }
       
       let countryCode = getCountryCode(iban);
@@ -337,13 +369,13 @@ extension org.iban4j {
       if(!countryCode.equals(countryCode.uppercased()) ||
          !Character.isLetter(countryCode.charAt(0)) ||
          !Character.isLetter(countryCode.charAt(1))) {
-        throw IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.COUNTRY_CODE_UPPER_CASE_LETTERS, countryCode,
-                                                      "Iban country code must contain upper case letters.");
+        return .failure( IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.COUNTRY_CODE_UPPER_CASE_LETTERS, countryCode,
+                                                      "Iban country code must contain upper case letters."))
       }
       
       if(CountryCode.getByCode(countryCode) == nil) {
-        throw IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.COUNTRY_CODE_EXISTS, countryCode,
-                                                      "Iban contains non existing country code.");
+        return .failure( IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.COUNTRY_CODE_EXISTS, countryCode,
+                                                      "Iban contains non existing country code."))
       }
       
       // check if country is supported
@@ -351,22 +383,23 @@ extension org.iban4j {
         let structure = org.iban4j.bban.BbanStructure.forCountry(
           ccByCode)
         if (structure == nil) {
-          throw UnsupportedCountryException.UnsupportedCountryException(countryCode,
-                                            "Country code is not supported.");
+          return .failure(UnsupportedCountryException.UnsupportedCountryException(countryCode,
+                                            "Country code is not supported."))
         }
+        return .success(self)
       }
       else {
-        throw UnsupportedCountryException.UnsupportedCountryException("none",
-                                                                      "Country code is not supported.");
+        return .failure(UnsupportedCountryException.UnsupportedCountryException("none",
+                                                                      "Country code is not supported."))
       }
     }
     
-    private static func validateCheckDigitPresence(_ iban : String) throws {
+    private static func validateCheckDigitPresence(_ iban : String) -> Result<Any, Error> {
       // check if iban contains 2 digit check digit
       if iban.count < COUNTRY_CODE_LENGTH + CHECK_DIGIT_LENGTH {
-        throw IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.CHECK_DIGIT_TWO_DIGITS,
+        return .failure( IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.CHECK_DIGIT_TWO_DIGITS,
                                                       iban.substring(COUNTRY_CODE_LENGTH),
-                                                      "Iban must contain 2 digit check digit.");
+                                                      "Iban must contain 2 digit check digit."))
       }
       
       let checkDigit = getCheckDigit(iban);
@@ -374,24 +407,26 @@ extension org.iban4j {
       // check digits
       if(!Character.isDigit(checkDigit.charAt(0)) ||
          !Character.isDigit(checkDigit.charAt(1))) {
-        throw IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.CHECK_DIGIT_ONLY_DIGITS, checkDigit,
-                                                      "Iban's check digit should contain only digits.");
+        return .failure( IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.CHECK_DIGIT_ONLY_DIGITS, checkDigit,
+                                                      "Iban's check digit should contain only digits."))
       }
+      return .success(self)
     }
     
     private static func validateBbanLength(_ iban : String,
-                                           _ structure : org.iban4j.bban.BbanStructure) throws {
+                                           _ structure : org.iban4j.bban.BbanStructure) -> Result<Any?, IbanFormatException> {
       let expectedBbanLength : Int = structure.getBbanLength();
       let bban : String = getBban(iban);
       let bbanLength : Int = bban.count
       if (expectedBbanLength != bbanLength) {
-        throw IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.BBAN_LENGTH,
+        return .failure(IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.BBAN_LENGTH,
                                                       bbanLength, expectedBbanLength,
-                                                      "[\(bban)] length is \(bbanLength), expected BBAN length is: \(expectedBbanLength)");
+                                                      "[\(bban)] length is \(bbanLength), expected BBAN length is: \(expectedBbanLength)"))
       }
+      return .success(self)
     }
     
-    private static func validateBbanEntries(_ iban : String, _ structure : org.iban4j.bban.BbanStructure) throws {
+    private static func validateBbanEntries(_ iban : String, _ structure : org.iban4j.bban.BbanStructure) -> Result<Any?, Error> {
       let bban : String = getBban(iban);
       var bbanEntryOffset = 0;
       for entry in structure.getEntries() {
@@ -402,40 +437,45 @@ extension org.iban4j {
         bbanEntryOffset = bbanEntryOffset + entryLength;
         
         // validate character type
-        try validateBbanEntryCharacterType(entry, entryValue);
+        switch validateBbanEntryCharacterType(entry, entryValue) {
+        case .failure(let error) : return .failure(error)
+        default: break
+        }
       }
+      return .success(self)
     }
     
     private static func validateBbanEntryCharacterType(_ entry : org.iban4j.bban.BbanStructureEntry,
-                                                       _ entryValue : String) throws {
+                                                       _ entryValue : String) -> Result<Any?, IbanFormatException> {
       switch (entry.getCharacterType()) {
       case .a:
         for ch in entryValue.toCharArray() {
           if (!ch.isUppercase) {
-            throw IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.BBAN_ONLY_UPPER_CASE_LETTERS,
+            return .failure( IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.BBAN_ONLY_UPPER_CASE_LETTERS,
                                                           entry.getEntryType(), entryValue, ch,
-                                                          "[\(entryValue)] must contain only upper case letters.")
+                                                          "[\(entryValue)] must contain only upper case letters."))
           }
         }
         break;
       case .c:
         for ch in entryValue.toCharArray() {
           if (!(ch.isLetter || (ch.isNumber && ch.isASCII))) {
-            throw IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.BBAN_ONLY_DIGITS_OR_LETTERS,
+            return .failure( IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.BBAN_ONLY_DIGITS_OR_LETTERS,
                                                           entry.getEntryType(), entryValue, ch,
-                                                          "[\(entryValue)] must contain only digits or letters.")
+                                                          "[\(entryValue)] must contain only digits or letters."))
           }
         }
         break;
       case .n:
         for ch in entryValue.toCharArray() {
           if (!(ch.isNumber && ch.isASCII)) {
-            throw IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.BBAN_ONLY_DIGITS,
+            return .failure( IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.BBAN_ONLY_DIGITS,
                                                           entry.getEntryType(), entryValue, ch,
-                                                          "[\(entryValue)] must contain only digits.")
+                                                          "[\(entryValue)] must contain only digits."))
           }
         }
       }
+      return .success(self)
     }
     
     
@@ -446,16 +486,16 @@ extension org.iban4j {
      * @param iban String value
      * @return modulo 97
      */
-    private static func calculateMod(_ iban : String) throws -> Int {
+    private static func calculateMod(_ iban : String) -> Result<Int, IbanFormatException> {
       let reformattedIban : String = getBban(iban) + getCountryCodeAndCheckDigit(iban);
       var total : Int64 = 0;
       for i in 0..<reformattedIban.count {
         // FIXME: JavaDoc tells also Roman numeric like Unicode 217B (Roman twelve) are supported. In result of this you can include this in IBAN without exception is throwing.
         let numericValue : Int = Int (Character.getNumericValue(reformattedIban.charAt(i)))
         if (numericValue < 0 || numericValue > 35) {
-          throw IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.IBAN_VALID_CHARACTERS, nil, nil,
+          return .failure( IbanFormatException.IbanFormatException(IbanFormatException.IbanFormatViolation.IBAN_VALID_CHARACTERS, nil, nil,
                                                         reformattedIban.charAt(i),
-                                                        "Invalid Character[\(i)] = '\(numericValue)'");
+                                                        "Invalid Character[\(i)] = '\(numericValue)'"))
         }
         total = (numericValue > 9 ? total * 100 : total * 10) + Int64(numericValue);
         
@@ -464,7 +504,7 @@ extension org.iban4j {
         }
         
       }
-      return Int(total % Int64(MOD));
+      return .success(Int(total % Int64(MOD)))
     }
     
     private static func getBbanStructure(_ iban : String) -> org.iban4j.bban.BbanStructure {

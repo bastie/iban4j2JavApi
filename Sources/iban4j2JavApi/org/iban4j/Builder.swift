@@ -54,7 +54,7 @@ extension org.iban4j {
      * @param countryCode CountryCode
      * @return builder Builder
      */
-    public func setCountryCode(_ newCountryCode : CountryCode ) -> Builder {
+    public func setCountryCode(_ newCountryCode : CountryCode?) -> Builder {
       self.countryCode = newCountryCode;
       return self;
     }
@@ -65,7 +65,7 @@ extension org.iban4j {
      * @param bankCode String
      * @return builder Builder
      */
-    public func setBankCode(_ newBankCode : String) -> Builder {
+    public func setBankCode(_ newBankCode : String?) -> Builder {
       self.bankCode = newBankCode;
       return self;
     }
@@ -76,7 +76,7 @@ extension org.iban4j {
      * @param branchCode String
      * @return builder Builder
      */
-    public func setBranchCode(_ newBranchCode : String) -> Builder {
+    public func setBranchCode(_ newBranchCode : String?) -> Builder {
       self.branchCode = newBranchCode;
       return self;
     }
@@ -87,7 +87,7 @@ extension org.iban4j {
      * @param accountNumber String
      * @return builder Builder
      */
-    public func setAccountNumber(_ newAccountNumber : String) -> Builder {
+    public func setAccountNumber(_ newAccountNumber : String?) -> Builder {
       self.accountNumber = newAccountNumber;
       return self;
     }
@@ -98,7 +98,7 @@ extension org.iban4j {
      * @param nationalCheckDigit String
      * @return builder Builder
      */
-    public func setNationalCheckDigit(_ newNationalCheckDigit : String) -> Builder {
+    public func setNationalCheckDigit(_ newNationalCheckDigit : String?) -> Builder {
       self.nationalCheckDigit = newNationalCheckDigit;
       return self;
     }
@@ -109,7 +109,7 @@ extension org.iban4j {
      * @param accountType String
      * @return builder Builder
      */
-    public func setAccountType(_ newAccountType : String ) -> Builder {
+    public func setAccountType(_ newAccountType : String?) -> Builder {
       self.accountType = newAccountType;
       return self;
     }
@@ -120,7 +120,7 @@ extension org.iban4j {
      * @param ownerAccountType String
      * @return builder Builder
      */
-    public func setOwnerAccountType(_ newOwnerAccountType : String ) -> Builder {
+    public func setOwnerAccountType(_ newOwnerAccountType : String?) -> Builder {
       self.ownerAccountType = newOwnerAccountType;
       return self
     }
@@ -131,7 +131,7 @@ extension org.iban4j {
      * @param identificationNumber String
      * @return builder Builder
      */
-    public func setIdentificationNumber(_ newIdentificationNumber : String ) -> Builder {
+    public func setIdentificationNumber(_ newIdentificationNumber : String?) -> Builder {
       self.identificationNumber = newIdentificationNumber;
       return self
     }

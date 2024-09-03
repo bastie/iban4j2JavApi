@@ -89,7 +89,7 @@ extension org.iban4j {
     }
         
     public func test_expectRandomAlphanumericBranchCodeIsValid() {
-      for  i in 0..<100 {
+      for _ in 0..<100 {
         let entry = org.iban4j.bban.BbanStructureEntry.branchCode(5, "c");
         
         let generated : String = try! entry.getRandom();
@@ -106,7 +106,7 @@ extension org.iban4j {
     }
     
     public func test_expectRandomAlphabeticNationalCheckDigitIsValid() {
-      for i in 0..<100 {
+      for _ in 0..<100 {
         let entry = org.iban4j.bban.BbanStructureEntry.nationalCheckDigit(6, "a");
         
         let generated : String = try! entry.getRandom();
@@ -123,7 +123,7 @@ extension org.iban4j {
     }
     
     public func test_expectRandomNumericIdentificationNumberIsValid() {
-      for i in 0..<100 {
+      for _ in 0..<100 {
         let entry = org.iban4j.bban.BbanStructureEntry.identificationNumber(7, "n");
         
         let generated : String = try! entry.getRandom();
@@ -141,7 +141,7 @@ extension org.iban4j {
     
     public func test_expectZeroLengthEntryGeneratesZeroLengthStrings() {
       let entry = org.iban4j.bban.BbanStructureEntry.accountType(0, "n");
-      for i in 0..<100 {
+      for _ in 0..<100 {
         let generated = try! entry.getRandom();
         
         XCTAssertEqual(

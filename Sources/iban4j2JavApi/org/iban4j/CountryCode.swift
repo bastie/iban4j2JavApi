@@ -23,7 +23,7 @@ extension org.iban4j{
    *
    * <a href="http://en.wikipedia.org/wiki/ISO_3166-1">ISO 3166-1</a> country code.
    */
-  public enum CountryCode : Hashable, CustomStringConvertible {
+  public enum CountryCode : Hashable, CustomStringConvertible, Sendable {
 
     case AD(name:String="Andorra", alpha3:String="AND")
     case AE(name:String="United Arab Emirates", alpha3:String="ARE")

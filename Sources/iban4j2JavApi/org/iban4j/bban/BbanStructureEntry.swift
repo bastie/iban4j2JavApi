@@ -19,7 +19,7 @@ extension org.iban4j.bban {
   /**
    * Bban Structure Entry representation.
    */
-  public final class BbanStructureEntry : CustomStringConvertible {
+  public final class BbanStructureEntry : CustomStringConvertible, Sendable {
     
     private let entryType : org.iban4j.bban.BbanEntryType;
     private let characterType : EntryCharacterType;
@@ -143,7 +143,6 @@ extension org.iban4j.bban {
     public func toString() -> String {
       return "BbanStructureEntry{entryType=\(entryType), characterType=\(characterType), length=\(length)}"
     }
-    
     
     public var description: String {
       get {

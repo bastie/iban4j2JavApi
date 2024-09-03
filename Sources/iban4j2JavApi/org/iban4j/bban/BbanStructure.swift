@@ -19,9 +19,9 @@ import JavApi
 extension org.iban4j.bban {
   
   /** Class that represents BBAN structure */
-  public class BbanStructure {
+  public final class BbanStructure : Sendable {
     
-    private static let structures : [org.iban4j.CountryCode: BbanStructure] = [
+    fileprivate static let structures : [org.iban4j.CountryCode: BbanStructure] = [
       // MARK: CountryCodes A...
       org.iban4j.CountryCode.AL() :
       BbanStructure(
@@ -45,23 +45,46 @@ extension org.iban4j.bban {
       
       org.iban4j.CountryCode.AT() : BbanStructure(BbanStructureEntry.bankCode(5, "n"), BbanStructureEntry.accountNumber(11, "n")),
       
+      // Finland and its sub-territory (see https://www.iban.com/structure)
+      org.iban4j.CountryCode.AX() : BbanStructure(
+        BbanStructureEntry.bankCode(6, "n"),
+        BbanStructureEntry.accountNumber(7, "n"),
+        BbanStructureEntry.nationalCheckDigit(1, "n")),
+
       org.iban4j.CountryCode.AZ() : BbanStructure(BbanStructureEntry.bankCode(4, "a"), BbanStructureEntry.accountNumber(20, "c")),
       
       // MARK: CountryCodes B...
-      org.iban4j.CountryCode.BH() :
-      BbanStructure(BbanStructureEntry.bankCode(4, "a"), BbanStructureEntry.accountNumber(14, "c")),
-      
+      org.iban4j.CountryCode.BA() :
+        BbanStructure(
+          BbanStructureEntry.bankCode(3, "n"),
+          BbanStructureEntry.branchCode(3, "n"),
+          BbanStructureEntry.accountNumber(8, "n"),
+          BbanStructureEntry.nationalCheckDigit(2, "n")),
+
       org.iban4j.CountryCode.BE() :
       BbanStructure(
         BbanStructureEntry.bankCode(3, "n"),
         BbanStructureEntry.accountNumber(7, "n"),
         BbanStructureEntry.nationalCheckDigit(2, "n")),
       
-      org.iban4j.CountryCode.BA() :
-      BbanStructure(
-        BbanStructureEntry.bankCode(3, "n"),
-        BbanStructureEntry.branchCode(3, "n"),
-        BbanStructureEntry.accountNumber(8, "n"),
+      org.iban4j.CountryCode.BG() :
+        BbanStructure(
+          BbanStructureEntry.bankCode(4, "a"),
+          BbanStructureEntry.branchCode(4, "n"),
+          BbanStructureEntry.accountType(2, "n"),
+          BbanStructureEntry.accountNumber(8, "c")),
+      
+      org.iban4j.CountryCode.BH() :
+        BbanStructure(BbanStructureEntry.bankCode(4, "a"), BbanStructureEntry.accountNumber(14, "c")),
+      
+      /*
+       * French sub-territories may use their own country code (BL,RE,NC,...) or FR for their IBAN.
+       * Structure is the same, only the IBAN checksum differs.
+       */
+      org.iban4j.CountryCode.BL() : BbanStructure(
+        BbanStructureEntry.bankCode(5, "n"),
+        BbanStructureEntry.branchCode(5, "n"),
+        BbanStructureEntry.accountNumber(11, "c"),
         BbanStructureEntry.nationalCheckDigit(2, "n")),
       
       org.iban4j.CountryCode.BR() :
@@ -71,13 +94,6 @@ extension org.iban4j.bban {
         BbanStructureEntry.accountNumber(10, "n"),
         BbanStructureEntry.accountType(1, "a"),
         BbanStructureEntry.ownerAccountNumber(1, "c")),
-      
-      org.iban4j.CountryCode.BG() :
-      BbanStructure(
-        BbanStructureEntry.bankCode(4, "a"),
-        BbanStructureEntry.branchCode(4, "n"),
-        BbanStructureEntry.accountType(2, "n"),
-        BbanStructureEntry.accountNumber(8, "c")),
       
       org.iban4j.CountryCode.BY() :
       BbanStructure(
@@ -90,65 +106,55 @@ extension org.iban4j.bban {
       BbanStructure(
         BbanStructureEntry.bankCode(4, "n"), BbanStructureEntry.accountNumber(14, "n")),
       
-      // MARK: CountryCodes D...
-      org.iban4j.CountryCode.DE() :
-      BbanStructure(
-        BbanStructureEntry.bankCode(8, "n"), BbanStructureEntry.accountNumber(10, "n")),
-      
-      // MARK: CountryCodes H...
-      org.iban4j.CountryCode.HR() :
-      BbanStructure(
-        BbanStructureEntry.bankCode(7, "n"), BbanStructureEntry.accountNumber(10, "n")),
-      
       org.iban4j.CountryCode.CY() :
-      BbanStructure(
-        BbanStructureEntry.bankCode(3, "n"),
-        BbanStructureEntry.branchCode(5, "n"),
-        BbanStructureEntry.accountNumber(16, "c")),
+        BbanStructure(
+          BbanStructureEntry.bankCode(3, "n"),
+          BbanStructureEntry.branchCode(5, "n"),
+          BbanStructureEntry.accountNumber(16, "c")),
       
       org.iban4j.CountryCode.CZ() :
-      BbanStructure(
-        BbanStructureEntry.bankCode(4, "n"), BbanStructureEntry.accountNumber(16, "n")),
+        BbanStructure(
+          BbanStructureEntry.bankCode(4, "n"), BbanStructureEntry.accountNumber(16, "n")),
+      
+      // MARK: CountryCodes D...
+      org.iban4j.CountryCode.DE() :
+      BbanStructure(BbanStructureEntry.bankCode(8, "n"), BbanStructureEntry.accountNumber(10, "n")),
       
       org.iban4j.CountryCode.DK() :
-      BbanStructure(
-        BbanStructureEntry.bankCode(4, "n"), BbanStructureEntry.accountNumber(10, "n")),
+        BbanStructure(BbanStructureEntry.bankCode(4, "n"), BbanStructureEntry.accountNumber(10, "n")),
       
       org.iban4j.CountryCode.DO() :
-      BbanStructure(
-        BbanStructureEntry.bankCode(4, "c"), BbanStructureEntry.accountNumber(20, "n")),
+        BbanStructure(BbanStructureEntry.bankCode(4, "c"), BbanStructureEntry.accountNumber(20, "n")),
       
+      // MARK: CountryCodes E...
+
       org.iban4j.CountryCode.EE() :
-      BbanStructure(
-        BbanStructureEntry.bankCode(2, "n"),
-        BbanStructureEntry.branchCode(2, "n"),
-        BbanStructureEntry.accountNumber(11, "n"),
-        BbanStructureEntry.nationalCheckDigit(1, "n")),
+        BbanStructure(
+          BbanStructureEntry.bankCode(2, "n"),
+          BbanStructureEntry.branchCode(2, "n"),
+          BbanStructureEntry.accountNumber(11, "n"),
+          BbanStructureEntry.nationalCheckDigit(1, "n")),
       
       org.iban4j.CountryCode.EG() :
-      BbanStructure(
-        BbanStructureEntry.bankCode(4, "n"),
-        BbanStructureEntry.branchCode(4, "n"),
-        BbanStructureEntry.accountNumber(17, "n")),
+        BbanStructure(
+          BbanStructureEntry.bankCode(4, "n"),
+          BbanStructureEntry.branchCode(4, "n"),
+          BbanStructureEntry.accountNumber(17, "n")),
       
+      // MARK: CountryCodes F...
       org.iban4j.CountryCode.FO() :
-      BbanStructure(
-        BbanStructureEntry.bankCode(4, "n"),
-        BbanStructureEntry.accountNumber(9, "n"),
-        BbanStructureEntry.nationalCheckDigit(1, "n")),
+        BbanStructure(
+          BbanStructureEntry.bankCode(4, "n"),
+          BbanStructureEntry.accountNumber(9, "n"),
+          BbanStructureEntry.nationalCheckDigit(1, "n")),
       
-      // Finland and its sub-territory (see https://www.iban.com/structure)
       org.iban4j.CountryCode.FI() : BbanStructure(
         BbanStructureEntry.bankCode(6, "n"),
         BbanStructureEntry.accountNumber(7, "n"),
         BbanStructureEntry.nationalCheckDigit(1, "n")),
-      org.iban4j.CountryCode.AX() : BbanStructure(
-        BbanStructureEntry.bankCode(6, "n"),
-        BbanStructureEntry.accountNumber(7, "n"),
-        BbanStructureEntry.nationalCheckDigit(1, "n")),
       
-      // France and its sub-territories (see https://www.iban.com/structure)
-      /**
+      /*
+       * France and its sub-territories (see https://www.iban.com/structure)
        * French sub-territories may use their own country code (BL,RE,NC,...) or FR for their IBAN.
        * Structure is the same, only the IBAN checksum differs.
        */
@@ -157,94 +163,140 @@ extension org.iban4j.bban {
         BbanStructureEntry.branchCode(5, "n"),
         BbanStructureEntry.accountNumber(11, "c"),
         BbanStructureEntry.nationalCheckDigit(2, "n")),
+
+      // MARK: CountryCodes G...
+      /*
+       * French sub-territories may use their own country code (BL,RE,NC,...) or FR for their IBAN.
+       * Structure is the same, only the IBAN checksum differs.
+       */
       org.iban4j.CountryCode.GF() : BbanStructure(
         BbanStructureEntry.bankCode(5, "n"),
         BbanStructureEntry.branchCode(5, "n"),
         BbanStructureEntry.accountNumber(11, "c"),
         BbanStructureEntry.nationalCheckDigit(2, "n")),
+      /*
+       * French sub-territories may use their own country code (BL,RE,NC,...) or FR for their IBAN.
+       * Structure is the same, only the IBAN checksum differs.
+       */
       org.iban4j.CountryCode.GP() : BbanStructure(
         BbanStructureEntry.bankCode(5, "n"),
         BbanStructureEntry.branchCode(5, "n"),
         BbanStructureEntry.accountNumber(11, "c"),
         BbanStructureEntry.nationalCheckDigit(2, "n")),
+
+      org.iban4j.CountryCode.GA() :
+        BbanStructure(
+          BbanStructureEntry.bankCode(5, "n"),
+          BbanStructureEntry.branchCode(5, "n"),
+          BbanStructureEntry.accountNumber(13, "c")),
+      
+      org.iban4j.CountryCode.GE() :
+        BbanStructure(
+          BbanStructureEntry.bankCode(2, "a"), BbanStructureEntry.accountNumber(16, "n")),
+      
+      org.iban4j.CountryCode.GI() :
+        BbanStructure(
+          BbanStructureEntry.bankCode(4, "a"), BbanStructureEntry.accountNumber(15, "c")),
+      
+      org.iban4j.CountryCode.GL() :
+        BbanStructure(
+          BbanStructureEntry.bankCode(4, "n"), BbanStructureEntry.accountNumber(10, "n")),
+      
+      org.iban4j.CountryCode.GR() :
+        BbanStructure(
+          BbanStructureEntry.bankCode(3, "n"),
+          BbanStructureEntry.branchCode(4, "n"),
+          BbanStructureEntry.accountNumber(16, "c")),
+      
+      org.iban4j.CountryCode.GT() :
+        BbanStructure(
+          BbanStructureEntry.bankCode(4, "c"), BbanStructureEntry.accountNumber(20, "c")),
+      
+      // MARK: CountryCodes H...
+      org.iban4j.CountryCode.HR() :
+      BbanStructure(BbanStructureEntry.bankCode(7, "n"), BbanStructureEntry.accountNumber(10, "n")),
+      
+      /*
+       * French sub-territories may use their own country code (BL,RE,NC,...) or FR for their IBAN.
+       * Structure is the same, only the IBAN checksum differs.
+       */
       org.iban4j.CountryCode.MQ() : BbanStructure(
         BbanStructureEntry.bankCode(5, "n"),
         BbanStructureEntry.branchCode(5, "n"),
         BbanStructureEntry.accountNumber(11, "c"),
         BbanStructureEntry.nationalCheckDigit(2, "n")),
+      /*
+       * French sub-territories may use their own country code (BL,RE,NC,...) or FR for their IBAN.
+       * Structure is the same, only the IBAN checksum differs.
+       */
       org.iban4j.CountryCode.RE() : BbanStructure(
         BbanStructureEntry.bankCode(5, "n"),
         BbanStructureEntry.branchCode(5, "n"),
         BbanStructureEntry.accountNumber(11, "c"),
         BbanStructureEntry.nationalCheckDigit(2, "n")),
+      /*
+       * French sub-territories may use their own country code (BL,RE,NC,...) or FR for their IBAN.
+       * Structure is the same, only the IBAN checksum differs.
+       */
       org.iban4j.CountryCode.PF() : BbanStructure(
         BbanStructureEntry.bankCode(5, "n"),
         BbanStructureEntry.branchCode(5, "n"),
         BbanStructureEntry.accountNumber(11, "c"),
         BbanStructureEntry.nationalCheckDigit(2, "n")),
+      /*
+       * French sub-territories may use their own country code (BL,RE,NC,...) or FR for their IBAN.
+       * Structure is the same, only the IBAN checksum differs.
+       */
       org.iban4j.CountryCode.TF() : BbanStructure(
         BbanStructureEntry.bankCode(5, "n"),
         BbanStructureEntry.branchCode(5, "n"),
         BbanStructureEntry.accountNumber(11, "c"),
         BbanStructureEntry.nationalCheckDigit(2, "n")),
+      /*
+       * French sub-territories may use their own country code (BL,RE,NC,...) or FR for their IBAN.
+       * Structure is the same, only the IBAN checksum differs.
+       */
       org.iban4j.CountryCode.YT() : BbanStructure(
         BbanStructureEntry.bankCode(5, "n"),
         BbanStructureEntry.branchCode(5, "n"),
         BbanStructureEntry.accountNumber(11, "c"),
         BbanStructureEntry.nationalCheckDigit(2, "n")),
+      /*
+       * French sub-territories may use their own country code (BL,RE,NC,...) or FR for their IBAN.
+       * Structure is the same, only the IBAN checksum differs.
+       */
       org.iban4j.CountryCode.NC() : BbanStructure(
         BbanStructureEntry.bankCode(5, "n"),
         BbanStructureEntry.branchCode(5, "n"),
         BbanStructureEntry.accountNumber(11, "c"),
         BbanStructureEntry.nationalCheckDigit(2, "n")),
-      org.iban4j.CountryCode.BL() : BbanStructure(
-        BbanStructureEntry.bankCode(5, "n"),
-        BbanStructureEntry.branchCode(5, "n"),
-        BbanStructureEntry.accountNumber(11, "c"),
-        BbanStructureEntry.nationalCheckDigit(2, "n")),
+      /*
+       * French sub-territories may use their own country code (BL,RE,NC,...) or FR for their IBAN.
+       * Structure is the same, only the IBAN checksum differs.
+       */
       org.iban4j.CountryCode.MF() : BbanStructure(
         BbanStructureEntry.bankCode(5, "n"),
         BbanStructureEntry.branchCode(5, "n"),
         BbanStructureEntry.accountNumber(11, "c"),
         BbanStructureEntry.nationalCheckDigit(2, "n")),
+      /*
+       * French sub-territories may use their own country code (BL,RE,NC,...) or FR for their IBAN.
+       * Structure is the same, only the IBAN checksum differs.
+       */
       org.iban4j.CountryCode.PM() : BbanStructure(
         BbanStructureEntry.bankCode(5, "n"),
         BbanStructureEntry.branchCode(5, "n"),
         BbanStructureEntry.accountNumber(11, "c"),
         BbanStructureEntry.nationalCheckDigit(2, "n")),
+      /*
+       * French sub-territories may use their own country code (BL,RE,NC,...) or FR for their IBAN.
+       * Structure is the same, only the IBAN checksum differs.
+       */
       org.iban4j.CountryCode.WF() : BbanStructure(
         BbanStructureEntry.bankCode(5, "n"),
         BbanStructureEntry.branchCode(5, "n"),
         BbanStructureEntry.accountNumber(11, "c"),
         BbanStructureEntry.nationalCheckDigit(2, "n")),
-      
-      org.iban4j.CountryCode.GA() :
-      BbanStructure(
-        BbanStructureEntry.bankCode(5, "n"),
-        BbanStructureEntry.branchCode(5, "n"),
-        BbanStructureEntry.accountNumber(13, "c")),
-      
-      org.iban4j.CountryCode.GE() :
-      BbanStructure(
-        BbanStructureEntry.bankCode(2, "a"), BbanStructureEntry.accountNumber(16, "n")),
-      
-      org.iban4j.CountryCode.GI() :
-      BbanStructure(
-        BbanStructureEntry.bankCode(4, "a"), BbanStructureEntry.accountNumber(15, "c")),
-      
-      org.iban4j.CountryCode.GL() :
-      BbanStructure(
-        BbanStructureEntry.bankCode(4, "n"), BbanStructureEntry.accountNumber(10, "n")),
-      
-      org.iban4j.CountryCode.GR() :
-      BbanStructure(
-        BbanStructureEntry.bankCode(3, "n"),
-        BbanStructureEntry.branchCode(4, "n"),
-        BbanStructureEntry.accountNumber(16, "c")),
-      
-      org.iban4j.CountryCode.GT() :
-      BbanStructure(
-        BbanStructureEntry.bankCode(4, "c"), BbanStructureEntry.accountNumber(20, "c")),
       
       org.iban4j.CountryCode.HU() :
       BbanStructure(
@@ -307,20 +359,16 @@ extension org.iban4j.bban {
         BbanStructureEntry.bankCode(4, "a"), BbanStructureEntry.accountNumber(13, "c")),
       
       org.iban4j.CountryCode.LB() :
-      BbanStructure(
-        BbanStructureEntry.bankCode(4, "n"), BbanStructureEntry.accountNumber(20, "c")),
+      BbanStructure(BbanStructureEntry.bankCode(4, "n"), BbanStructureEntry.accountNumber(20, "c")),
       
       org.iban4j.CountryCode.LI() :
-      BbanStructure(
-        BbanStructureEntry.bankCode(5, "n"), BbanStructureEntry.accountNumber(12, "c")),
+      BbanStructure(BbanStructureEntry.bankCode(5, "n"), BbanStructureEntry.accountNumber(12, "c")),
       
       org.iban4j.CountryCode.LT() :
-      BbanStructure(
-        BbanStructureEntry.bankCode(5, "n"), BbanStructureEntry.accountNumber(11, "n")),
+      BbanStructure(BbanStructureEntry.bankCode(5, "n"), BbanStructureEntry.accountNumber(11, "n")),
       
       org.iban4j.CountryCode.LU() :
-      BbanStructure(
-        BbanStructureEntry.bankCode(3, "n"), BbanStructureEntry.accountNumber(13, "c")),
+      BbanStructure(BbanStructureEntry.bankCode(3, "n"), BbanStructureEntry.accountNumber(13, "c")),
       
       org.iban4j.CountryCode.MA() :
       BbanStructure(
@@ -566,10 +614,10 @@ extension org.iban4j.bban {
         BbanStructureEntry.accountNumber(13, "n"))
     ] // END OF structures
 
-    private var entries : [BbanStructureEntry] = [];
+    private let entries : [BbanStructureEntry];
     
     private init(_ newEntries : BbanStructureEntry...) {
-      self.entries.append(contentsOf: newEntries);
+      self.entries = newEntries
     }
     
     /**
@@ -577,7 +625,6 @@ extension org.iban4j.bban {
      * @return BbanStructure for specified country or null if country is not supported.
      */
     public static func forCountry(_ countryCode : org.iban4j.CountryCode) -> BbanStructure? {
-      if structures.isEmpty {_ = BbanStructure()}
       let result = try? structures.get(countryCode);
       return result
     }
@@ -601,22 +648,15 @@ extension org.iban4j.bban {
       else {
         return false
       }
-      // nice functional Java impl:
-      /*
-      final Optional<BbanStructure> bbanStructure = Optional.ofNullable(forCountry(countryCode));
-      return bbanStructure
-        .map(
-          structure ->
-          structure.getEntries().stream()
-            .anyMatch(e -> BbanEntryType.national_check_digit.equals(e.getEntryType())))
-        .orElse(false);
-       */
     }
+    
     
     public static func supportedCountries() -> [org.iban4j.CountryCode] {
       return Array(structures.keys)
     }
     
+    /// Return an array of ``BbanStructureEntry``
+    /// - Returns array of ``BbanStructureEntry``
     public func getEntries() -> [BbanStructureEntry] {
       return Array(self.entries)
     }
@@ -626,7 +666,7 @@ extension org.iban4j.bban {
      *
      * @return int length
      */
-    public func getBbanLength() -> Int{
+    public func getBbanLength() -> Int {
       var length = 0;
       
       for entry in self.entries {

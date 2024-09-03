@@ -297,35 +297,12 @@ extension org.iban4j.bban {
       structures[org.iban4j.CountryCode.LU()] =
         BbanStructure(
           BbanStructureEntry.bankCode(3, "n"), BbanStructureEntry.accountNumber(13, "c"))
-      
-      structures[org.iban4j.CountryCode.MK()] =
-        BbanStructure(
-          BbanStructureEntry.bankCode(3, "n"),
-          BbanStructureEntry.accountNumber(10, "c"),
-          BbanStructureEntry.nationalCheckDigit(2, "n"))
-      
-      structures[org.iban4j.CountryCode.MT()] =
-        BbanStructure(
-          BbanStructureEntry.bankCode(4, "a"),
-          BbanStructureEntry.branchCode(5, "n"),
-          BbanStructureEntry.accountNumber(18, "c"))
-      
-      structures[org.iban4j.CountryCode.MR()] =
-        BbanStructure(
-          BbanStructureEntry.bankCode(5, "n"),
-          BbanStructureEntry.branchCode(5, "n"),
-          BbanStructureEntry.accountNumber(11, "n"),
-          BbanStructureEntry.nationalCheckDigit(2, "n"))
-      
-      structures[org.iban4j.CountryCode.MU()] =
-        BbanStructure(
-          BbanStructureEntry.bankCode(6, "c"),
-          BbanStructureEntry.branchCode(2, "n"),
-          BbanStructureEntry.accountNumber(18, "c"))
-      
-      structures[org.iban4j.CountryCode.MD()] =
-        BbanStructure(
-          BbanStructureEntry.bankCode(2, "c"), BbanStructureEntry.accountNumber(18, "c"))
+
+      structures[org.iban4j.CountryCode.MA()] =
+      BbanStructure(
+        BbanStructureEntry.bankCode(3, "n"),
+        BbanStructureEntry.branchCode(5, "n"),
+        BbanStructureEntry.accountNumber(16, "n"))
       
       structures[org.iban4j.CountryCode.MC()] =
         BbanStructure(
@@ -334,11 +311,48 @@ extension org.iban4j.bban {
           BbanStructureEntry.accountNumber(11, "c"),
           BbanStructureEntry.nationalCheckDigit(2, "n"))
       
+      structures[org.iban4j.CountryCode.MD()] =
+      BbanStructure(
+        BbanStructureEntry.bankCode(2, "c"), BbanStructureEntry.accountNumber(18, "c"))
+      
       structures[org.iban4j.CountryCode.ME()] =
         BbanStructure(
           BbanStructureEntry.bankCode(3, "n"),
           BbanStructureEntry.accountNumber(13, "n"),
           BbanStructureEntry.nationalCheckDigit(2, "n"))
+      
+      structures[org.iban4j.CountryCode.MK()] =
+      BbanStructure(
+        BbanStructureEntry.bankCode(3, "n"),
+        BbanStructureEntry.accountNumber(10, "c"),
+        BbanStructureEntry.nationalCheckDigit(2, "n"))
+      
+      structures[org.iban4j.CountryCode.MR()] =
+      BbanStructure(
+        BbanStructureEntry.bankCode(5, "n"),
+        BbanStructureEntry.branchCode(5, "n"),
+        BbanStructureEntry.accountNumber(11, "n"),
+        BbanStructureEntry.nationalCheckDigit(2, "n"))
+      
+      structures[org.iban4j.CountryCode.MT()] =
+      BbanStructure(
+        BbanStructureEntry.bankCode(4, "a"),
+        BbanStructureEntry.branchCode(5, "n"),
+        BbanStructureEntry.accountNumber(18, "c"))
+      
+      structures[org.iban4j.CountryCode.MU()] =
+      BbanStructure(
+        BbanStructureEntry.bankCode(6, "c"),
+        BbanStructureEntry.branchCode(2, "n"),
+        BbanStructureEntry.accountNumber(18, "c"))
+      
+      structures[org.iban4j.CountryCode.MZ()] =
+      BbanStructure(
+        BbanStructureEntry.bankCode(4, "n"),
+        BbanStructureEntry.branchCode(4, "n"),
+        BbanStructureEntry.accountNumber(11, "n"),
+        BbanStructureEntry.nationalCheckDigit(2, "n"))
+  
       
       structures[org.iban4j.CountryCode.NL()] =
         BbanStructure(

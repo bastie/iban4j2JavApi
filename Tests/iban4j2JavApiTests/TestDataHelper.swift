@@ -641,6 +641,20 @@ extension org.iban4j {
         var elem : (Iban, String)
         elem.0 =
         try! Builder()
+          .setCountryCode(CountryCode.MA())
+          .setBankCode("011")
+          .setBranchCode("51900")
+          .setAccountNumber("0001205000534921")
+          .build()
+        elem.1 =
+        "MA64011519000001205000534921"
+        result.insert(elem, at: result.count)
+      }
+      
+      do {
+        var elem : (Iban, String)
+        elem.0 =
+        try! Builder()
           .setCountryCode(CountryCode.MF())
           .setBankCode("12345")
           .setBranchCode("12345")
@@ -778,6 +792,20 @@ extension org.iban4j {
           .build()
         elem.1 =
         "NC551234512345123456789AB13"
+        result.insert(elem, at: result.count)
+      }
+      
+      do {
+        var elem : (Iban, String)
+        elem.0 = try! Builder()
+          .setCountryCode(CountryCode.MZ())
+          .setBankCode("0003")
+          .setBranchCode("0108")
+          .setAccountNumber("00163671023")
+          .setNationalCheckDigit("71")
+          .build()
+        elem.1 =
+        "MZ59000301080016367102371"
         result.insert(elem, at: result.count)
       }
       

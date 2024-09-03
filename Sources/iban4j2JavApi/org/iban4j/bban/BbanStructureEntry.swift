@@ -1,6 +1,4 @@
 /*
- * Copyright 2013 Artur Mkrtchyan
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,41 +19,27 @@ extension org.iban4j.bban {
   /**
    * Bban Structure Entry representation.
    */
-  public class BbanStructureEntry : CustomStringConvertible {
-    
+  public final class BbanStructureEntry : CustomStringConvertible {
     
     private let entryType : org.iban4j.bban.BbanEntryType;
     private let characterType : EntryCharacterType;
     private let length : Int;
     
-    private static var charByCharacterType : [EntryCharacterType: [Character]] = [:];
-    
-    private static var needInit = true
-    private static func initOnce () {
-      do {
-        let charTypeN : [Character] = ["0","1","2","3","4","5","6","7","8","9"]
-        try _ = charByCharacterType.put(EntryCharacterType.n, charTypeN)
-        
-        let charTypeA : [Character] = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
-        try _ = charByCharacterType.put(EntryCharacterType.a, charTypeA)
-        
-        var charTypeC : [Character] = []
-        charTypeC.append(contentsOf: charTypeN)
-        charTypeC.append(contentsOf: charTypeA)
-        
-        try _ = charByCharacterType.put(EntryCharacterType.c, charTypeC)
-      }
-      catch {} // ignored
-    }
+    private static let charByCharacterType : [EntryCharacterType: [Character]] = [
+      EntryCharacterType.n : [
+        "0","1","2","3","4","5","6","7","8","9"],
+      EntryCharacterType.a : [
+        "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
+      EntryCharacterType.c : [
+        "0","1","2","3","4","5","6","7","8","9",
+        "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"
+      ]
+    ]
     
     private init(_ newEntryType : org.iban4j.bban.BbanEntryType, _ newCharacterType : EntryCharacterType, _ newLength : Int) {
       self.entryType = newEntryType;
       self.characterType = newCharacterType;
       self.length = newLength;
-      if org.iban4j.bban.BbanStructureEntry.needInit {
-        org.iban4j.bban.BbanStructureEntry.initOnce()
-        org.iban4j.bban.BbanStructureEntry.needInit = false
-      }
     }
     
     public static func bankCode(_ length : Int, _ characterType : Character) -> BbanStructureEntry {
@@ -105,7 +89,7 @@ extension org.iban4j.bban {
       return length;
     }
     
-    public enum EntryCharacterType : String {
+    public enum EntryCharacterType : String, Sendable {
       /**
        * Numerical digits (0-9 only)
        */
@@ -168,5 +152,3 @@ extension org.iban4j.bban {
     }
   }
 }
-
-

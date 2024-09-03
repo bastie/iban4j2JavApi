@@ -18,7 +18,7 @@ extension org.iban4j.bban {
   /**
    * Basic Bank Account Number Entry Types.
    */
-  public enum BbanEntryType {
+  public enum BbanEntryType : Sendable {
          case bank_code
          case branch_code
          case account_number

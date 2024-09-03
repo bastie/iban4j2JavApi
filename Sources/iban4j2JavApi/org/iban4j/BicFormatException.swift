@@ -46,18 +46,7 @@ extension org.iban4j {
      * @param t the cause.
      */
     case BicFormatException(s : String, t : Throwable)
-    
-    /**
-     * Constructs a <code>BicFormatException</code> with the
-     * specified violation, actual value, expected value and detail message.
-     *
-     * @param violation the violation.
-     * @param actual the actual value.
-     * @param expected the expected value.
-     * @param s the detail message.
-     */
-    case BicFormatException(_ violation :BicFormatViolation, _ actual : Any, _ expected : Any, _ s: String)
-    
+        
     /**
      * Constructs a <code>BicFormatException</code> with the
      * specified violation and detail message.
@@ -75,7 +64,7 @@ extension org.iban4j {
      * @param actual the actual value.
      * @param s the detail message.
      */
-    case BicFormatException(_ violation : BicFormatViolation, _ actual : Any, _ s : String)
+    case BicFormatException(_ violation : BicFormatViolation, _ actual : String, _ s : String)
     
     /**
      * Constructs a <code>BicFormatException</code> with the
@@ -168,7 +157,7 @@ extension org.iban4j {
 }
 
 extension org.iban4j.BicFormatException {
-  public enum BicFormatViolation {
+  public enum BicFormatViolation : Sendable {
     case UNKNOWN
     
     case BIC_NOT_NULL

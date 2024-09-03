@@ -66,10 +66,10 @@ extension org.iban4j {
      * @param s the detail message.
      */
     case IbanFormatException(_ violation : IbanFormatViolation,
-                             _ actual : Any,
-                             _ expected : Any,
+                             _ actual : Int,
+                             _ expected : Int,
                              _ s : String)
-    
+  
     /**
      * Constructs a <code>IbanFormatException</code> with the
      * specified violation, actual value and detail message.
@@ -79,7 +79,7 @@ extension org.iban4j {
      * @param s the detail message.
      */
     case IbanFormatException(_ violation : IbanFormatViolation,
-                             _ actual : Any,
+                             _ actual : String,
                              _ s : String)
     
     /**
@@ -95,7 +95,7 @@ extension org.iban4j {
      */
     case IbanFormatException(_ violation : IbanFormatViolation,
                              _ entryType : org.iban4j.bban.BbanEntryType?,
-                             _ actual : Any?,
+                             _ actual : String?,
                              _ invalidCharacter : Character,
                              _ s : String)
     
@@ -289,7 +289,7 @@ extension org.iban4j {
 }
 
 extension org.iban4j.IbanFormatException {
-  public enum IbanFormatViolation {
+  public enum IbanFormatViolation : Sendable {
     case UNKNOWN
     
     case IBAN_FORMATTING
